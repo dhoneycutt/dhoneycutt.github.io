@@ -1,0 +1,10 @@
+﻿#canvas {
+    width: 500px;
+    height: 500px;
+    border: 10px solid transparent;
+}
+
+.rectangle {
+    border: 4px solid #FF0000;
+    position: absolute;
+}
