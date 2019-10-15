@@ -10,9 +10,11 @@
     <div id="canvas">
         <img id="imageID" src="images/1.jpg" style="max-height:100%; max-width: 100%" />
     </div>
-    <button id="prevBtn" onclick="prevImg()">Previous Image</button>
-    <button id="nextBtn" onclick="nextImg()">Next Image</button>
-    <button id="clearBtn" onclick="clearBoxes()">Clear Boxes</button>
+    <br />How many faces are in the image? <input id="inputBox" type="text" value="" /><br />
+    <button id="prevBtn" class="btn" onclick="prevImg()">Previous Image</button>
+    <button id="nextBtn" class="btn" onclick="nextImg()">Next Image</button>
+    <button id="clearBtn" class="btn" onclick="clearBoxes()">Clear Boxes</button>
+    
 </body>
 </html>
 
@@ -29,6 +31,7 @@
         else {
             i++
             document.getElementById("imageID").src = "images/" + i + ".jpg"
+            document.getElementById("inputBox").value = ""
             clearBoxes()
         }
     }
@@ -39,6 +42,7 @@
         else {
             i--
             document.getElementById("imageID").src = "images/" + i + ".jpg"
+            document.getElementById("inputBox").value = ""
             clearBoxes()
         }
     }
