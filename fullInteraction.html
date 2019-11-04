@@ -33,6 +33,36 @@
         console.log(iterationArray[itr][img])
         var boxes = iterationArray[itr][img]
         for (j = 0; j < boxes.length; j++) {
+            element = document.createElement('div');
+            element.className = 'rectangle'
+            element.id = idVar + 'box'
+            element.draggable = 'false'
+            element.style.left = boxes[j].left;
+            element.style.top = boxes[j].top;
+            element.style.width = boxes[j].width;
+            element.style.height = boxes[j].height;
+            canvas.appendChild(element)
+            closeButton = document.createElement('button')
+            closeButton.className = 'closeButton'
+            closeButton.id = idVar + 'btn'
+            closeButton.draggable = 'false'
+            closeButton.style.left = parseInt(element.style.left) + parseInt(element.style.width) - 3 + 'px'
+            closeButton.style.top = parseInt(element.style.top) - 10 + 'px'
+            closeButton.innerText = "X"
+            //closeButton.style.width = "10px"
+            //closeButton.style.height = "10px"
+            closeButton.style.fill = "blue"
+            closeButton.onclick = function (e) {
+                btnID = this.id
+                boxID = parseInt(this.id) + 'box'
+
+                document.getElementById(btnID).remove()
+                document.getElementById(boxID).remove()
+            }
+            canvas.appendChild(closeButton)
+            idVar++
+            element = null
+
 
         }
     }
