@@ -12,28 +12,38 @@
     </div>
     <br />How many human faces are in the image? <input id="inputBox" type="text" value="" /><br />
     Place bounding boxes around all faces. Click once to start placing a box, then click again to place the box (do not click and drag).<br />
-    <button id="prevBtn" class="btn" onclick="prevImg()">Previous Image</button>
+    <!--<button id="prevBtn" class="btn" onclick="prevImg()">Previous Image</button>-->
     <button id="nextBtn" class="btn" onclick="nextImg()">Next Image</button>
-    <button id="clearBtn" class="btn" onclick="clearBoxes()">Clear Boxes</button>
-    
+    <!--<button id="clearBtn" class="btn" onclick="clearBoxes()">Clear Boxes</button>-->
+    <script src="boxes.json"></script>
 </body>
 </html>
 
 <script>
-    var i = 1;
+    var i = 0;
     var idVar = 0
     var numFiles = 30;
     var iteration = getUrlVars()["i"]
-    document.getElementById("imageID").src = "images_" + iteration + "/1.jpg"
+    document.getElementById("imageID").src = "images_" + iteration + "/0.jpg"
+    initBoxes(iteration, 0)
     initDraw(document.getElementById('canvas'));
 
+    function initBoxes(itr, img) {
+        console.log(itr)
+        console.log(iterationArray[itr][img])
+        var boxes = iterationArray[itr][img]
+        for (j = 0; j < boxes.length; j++) {
+
+        }
+    }
+
     function nextImg() {
-        if (i == numFiles) {
+        if (i == numFiles - 1) {
             alert("Last image")
         }
         else {
             i++
-            document.getElementById("imageID").src = "images/" + i + ".jpg"
+            document.getElementById("imageID").src = "images_" + iteration + "/" + i + ".jpg"
             document.getElementById("inputBox").value = ""
             clearBoxes()
         }
@@ -86,60 +96,6 @@
                 element.style.top = (mouse.y - mouse.startY < 0) ? mouse.y + 'px' : mouse.startY + 'px';
             }
         }
-
-        //canvas.onclick = function (e) {
-        //    if (element !== null) {
-        //        element = null;
-        //        canvas.style.cursor = "default";
-        //        console.log("finsihed.");
-        //    } else {
-        //        console.log("begun.");
-        //        mouse.startX = mouse.x;
-        //        mouse.startY = mouse.y;
-        //        element = document.createElement('div');
-        //        element.className = 'rectangle'
-        //        element.style.left = mouse.x + 'px';
-        //        element.style.top = mouse.y + 'px';
-        //        canvas.appendChild(element)
-        //        canvas.style.cursor = "crosshair";
-        //    }
-        //}
-        //canvas.onmouseup = function (e) {
-        //    if (element != null) {
-        //        console.log(element)
-        //        //Create circle
-
-        //        //closeButton = document.createElement('div');
-        //        //closeButton.className = 'circle'
-        //        //closeButton.id = 'circle' + idVar
-        //        //closeButton.draggable = 'false'
-        //        //closeButton.style.cx = element.style.left
-        //        //closeButton.style.cy = element.style.top
-        //        //closeButton.style.r = '400px'
-        //        //closeButton.style.fill = "blue"
-        //        //canvas.appendChild(closeButton)
-        //        closeButton = document.createElement('button')
-        //        closeButton.className = 'closeButton'
-        //        closeButton.id = 'btn' + idVar
-        //        closeButton.draggable = 'false'
-        //        closeButton.style.left = parseInt(element.style.left) + parseInt(element.style.width) - 3 + 'px'
-        //        closeButton.style.top = parseInt(element.style.top) - 10 + 'px'
-        //        closeButton.innerText = "X"
-        //        //closeButton.style.width = "10px"
-        //        //closeButton.style.height = "10px"
-        //        closeButton.style.fill = "blue"
-        //        canvas.appendChild(closeButton)
-
-        //        document.getElementById('btn' + idVar).onclick = deleteBox()
-
-
-        //        idVar++
-
-        //        element = null;
-        //        canvas.style.cursor = "default";
-        //        console.log("finsihed.");
-        //    }
-        //}
 
         imageID.onmousedown = function (e) {
             console.log("begun.");
