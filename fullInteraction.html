@@ -1,0 +1,219 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>ALT</title>
+</head>
+<body>
+    <link rel="stylesheet" href="styles.css" />
+    <div id="canvas">
+        <img id="imageID" style="max-height:100%; max-width: 100%" draggable="false" user-select="none" />
+    </div>
+    <br />How many human faces are in the image? <input id="inputBox" type="text" value="" /><br />
+    Place bounding boxes around all faces. Click once to start placing a box, then click again to place the box (do not click and drag).<br />
+    <button id="prevBtn" class="btn" onclick="prevImg()">Previous Image</button>
+    <button id="nextBtn" class="btn" onclick="nextImg()">Next Image</button>
+    <button id="clearBtn" class="btn" onclick="clearBoxes()">Clear Boxes</button>
+    
+</body>
+</html>
+
+<script>
+    var i = 1;
+    var idVar = 0
+    var numFiles = 30;
+    var iteration = getUrlVars()["i"]
+    document.getElementById("imageID").src = "images_" + iteration + "/1.jpg"
+    initDraw(document.getElementById('canvas'));
+
+    function nextImg() {
+        if (i == numFiles) {
+            alert("Last image")
+        }
+        else {
+            i++
+            document.getElementById("imageID").src = "images/" + i + ".jpg"
+            document.getElementById("inputBox").value = ""
+            clearBoxes()
+        }
+    }
+    function prevImg() {
+        if (i == 1) {
+            alert("First image")
+        }
+        else {
+            i--
+            document.getElementById("imageID").src = "images/" + i + ".jpg"
+            document.getElementById("inputBox").value = ""
+            clearBoxes()
+        }
+    }
+
+    function clearBoxes() {
+        var boxes = document.getElementsByClassName('rectangle')
+        while (boxes[0]) {
+            boxes[0].parentNode.removeChild(boxes[0])
+        }
+    }
+
+    function initDraw(canvas) {
+        function setMousePosition(e) {
+            var ev = e || window.event; //Moz || IE
+            if (ev.pageX) { //Moz
+                mouse.x = ev.pageX + window.pageXOffset;
+                mouse.y = ev.pageY + window.pageYOffset;
+            } else if (ev.clientX) { //IE
+                mouse.x = ev.clientX + document.body.scrollLeft;
+                mouse.y = ev.clientY + document.body.scrollTop;
+            }
+        };
+
+        var mouse = {
+            x: 0,
+            y: 0,
+            startX: 0,
+            startY: 0
+        };
+        var element = null;
+
+        imageID.onmousemove = function (e) {
+            setMousePosition(e);
+            if (element !== null) {
+                element.style.width = Math.abs(mouse.x - mouse.startX) + 'px';
+                element.style.height = Math.abs(mouse.y - mouse.startY) + 'px';
+                element.style.left = (mouse.x - mouse.startX < 0) ? mouse.x + 'px' : mouse.startX + 'px';
+                element.style.top = (mouse.y - mouse.startY < 0) ? mouse.y + 'px' : mouse.startY + 'px';
+            }
+        }
+
+        //canvas.onclick = function (e) {
+        //    if (element !== null) {
+        //        element = null;
+        //        canvas.style.cursor = "default";
+        //        console.log("finsihed.");
+        //    } else {
+        //        console.log("begun.");
+        //        mouse.startX = mouse.x;
+        //        mouse.startY = mouse.y;
+        //        element = document.createElement('div');
+        //        element.className = 'rectangle'
+        //        element.style.left = mouse.x + 'px';
+        //        element.style.top = mouse.y + 'px';
+        //        canvas.appendChild(element)
+        //        canvas.style.cursor = "crosshair";
+        //    }
+        //}
+        //canvas.onmouseup = function (e) {
+        //    if (element != null) {
+        //        console.log(element)
+        //        //Create circle
+
+        //        //closeButton = document.createElement('div');
+        //        //closeButton.className = 'circle'
+        //        //closeButton.id = 'circle' + idVar
+        //        //closeButton.draggable = 'false'
+        //        //closeButton.style.cx = element.style.left
+        //        //closeButton.style.cy = element.style.top
+        //        //closeButton.style.r = '400px'
+        //        //closeButton.style.fill = "blue"
+        //        //canvas.appendChild(closeButton)
+        //        closeButton = document.createElement('button')
+        //        closeButton.className = 'closeButton'
+        //        closeButton.id = 'btn' + idVar
+        //        closeButton.draggable = 'false'
+        //        closeButton.style.left = parseInt(element.style.left) + parseInt(element.style.width) - 3 + 'px'
+        //        closeButton.style.top = parseInt(element.style.top) - 10 + 'px'
+        //        closeButton.innerText = "X"
+        //        //closeButton.style.width = "10px"
+        //        //closeButton.style.height = "10px"
+        //        closeButton.style.fill = "blue"
+        //        canvas.appendChild(closeButton)
+
+        //        document.getElementById('btn' + idVar).onclick = deleteBox()
+
+
+        //        idVar++
+
+        //        element = null;
+        //        canvas.style.cursor = "default";
+        //        console.log("finsihed.");
+        //    }
+        //}
+
+        imageID.onmousedown = function (e) {
+            console.log("begun.");
+            mouse.startX = mouse.x;
+            mouse.startY = mouse.y;
+            element = document.createElement('div');
+            element.className = 'rectangle'
+            element.id = idVar + 'box'
+            element.draggable = 'false'
+            element.style.left = mouse.x + 'px';
+            element.style.top = mouse.y + 'px';
+            element.onmouseup = function (e) {
+                if (element != null) {
+                    if (element.style.width == "" || element.style.height == "") {
+                        element.remove()
+                    }
+                    else {
+
+                        //Create circle
+
+                        //closeButton = document.createElement('div');
+                        //closeButton.className = 'circle'
+                        //closeButton.id = 'circle' + idVar
+                        //closeButton.draggable = 'false'
+                        //closeButton.style.cx = element.style.left
+                        //closeButton.style.cy = element.style.top
+                        //closeButton.style.r = '400px'
+                        //closeButton.style.fill = "blue"
+                        //canvas.appendChild(closeButton)
+                        closeButton = document.createElement('button')
+                        closeButton.className = 'closeButton'
+                        closeButton.id = idVar + 'btn'
+                        closeButton.draggable = 'false'
+                        closeButton.style.left = parseInt(element.style.left) + parseInt(element.style.width) - 3 + 'px'
+                        closeButton.style.top = parseInt(element.style.top) - 10 + 'px'
+                        closeButton.innerText = "X"
+                        //closeButton.style.width = "10px"
+                        //closeButton.style.height = "10px"
+                        closeButton.style.fill = "blue"
+                        closeButton.onclick = function (e) {
+                            btnID = this.id
+                            boxID = parseInt(this.id) + 'box'
+
+                            document.getElementById(btnID).remove()
+                            document.getElementById(boxID).remove()
+                        }
+                        canvas.appendChild(closeButton)
+
+                        console.log(element)
+                        console.log(closeButton)
+
+                        idVar++
+
+                        element = null;
+                        canvas.style.cursor = "default";
+                        console.log("finsihed.");
+                    }
+                }
+            }
+            canvas.appendChild(element)
+            canvas.style.cursor = "crosshair";
+         
+        }
+    }
+
+    function getUrlVars() {
+        var vars = {};
+        var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
+            vars[key] = value;
+        });
+        return vars;
+    }
+
+    function deleteBox(btnID) {
+        console.log("here")
+    }
+</script>
