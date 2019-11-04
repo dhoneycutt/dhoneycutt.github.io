@@ -29,8 +29,6 @@
     initDraw(document.getElementById('canvas'));
 
     function initBoxes(itr, img) {
-        console.log(itr)
-        console.log(iterationArray[itr][img])
         var boxes = iterationArray[itr][img]
         for (j = 0; j < boxes.length; j++) {
             element = document.createElement('div');
@@ -76,7 +74,6 @@
             document.getElementById("imageID").src = "images_" + iteration + "/" + i + ".jpg"
             document.getElementById("inputBox").value = ""
             clearBoxes()
-            console.log(iteration)
             initBoxes(iteration, i)
         }
     }
@@ -203,9 +200,5 @@
             vars[key] = value;
         });
         return vars;
-    }
-
-    function deleteBox(btnID) {
-        console.log("here")
     }
 </script>
