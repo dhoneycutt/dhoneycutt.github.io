@@ -1,0 +1,27 @@
+itr1_img1 = [
+  {
+    "left": "215px",
+    "top": "158px",
+    "width": "63px",
+    "height": "70px"
+  },
+  {
+    "left": "115px",
+    "top": "258px",
+    "width": "63px",
+    "height": "70px"
+  }
+],
+
+itr1_img2 = [
+  
+],
+
+images1 = [itr1_img1],
+
+images2 = [],
+
+images3 = [],
+
+
+iterationArray = [ images1, images2, images3 ]

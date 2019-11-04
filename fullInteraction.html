@@ -15,7 +15,7 @@
     <!--<button id="prevBtn" class="btn" onclick="prevImg()">Previous Image</button>-->
     <button id="nextBtn" class="btn" onclick="nextImg()">Next Image</button>
     <!--<button id="clearBtn" class="btn" onclick="clearBoxes()">Clear Boxes</button>-->
-    <script src="boxes.json"></script>
+    <script src="boxes.txt"></script>
 </body>
 </html>
 
@@ -76,6 +76,8 @@
             document.getElementById("imageID").src = "images_" + iteration + "/" + i + ".jpg"
             document.getElementById("inputBox").value = ""
             clearBoxes()
+            console.log(iteration)
+            initBoxes(iteration, i)
         }
     }
     function prevImg() {
@@ -93,7 +95,11 @@
     function clearBoxes() {
         var boxes = document.getElementsByClassName('rectangle')
         while (boxes[0]) {
-            boxes[0].parentNode.removeChild(boxes[0])
+            boxes[0].remove()
+        }
+        var buttons = document.getElementsByClassName('closeButton')
+        while (buttons[0]) {
+            buttons[0].remove()
         }
     }
 
