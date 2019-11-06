@@ -39,6 +39,15 @@
             element.style.top = boxes[j].top;
             element.style.width = boxes[j].width;
             element.style.height = boxes[j].height;
+            element.onmousemove = function (e) {
+                setMousePosition(e);
+                if (element !== null) {
+                    element.style.width = Math.abs(mouse.x - mouse.startX) + 'px';
+                    element.style.height = Math.abs(mouse.y - mouse.startY) + 'px';
+                    element.style.left = (mouse.x - mouse.startX < 0) ? mouse.x + 'px' : mouse.startX + 'px';
+                    element.style.top = (mouse.y - mouse.startY < 0) ? mouse.y + 'px' : mouse.startY + 'px';
+                }
+            }
             canvas.appendChild(element)
             closeButton = document.createElement('button')
             closeButton.className = 'closeButton'
@@ -56,6 +65,15 @@
 
                 document.getElementById(btnID).remove()
                 document.getElementById(boxID).remove()
+            }
+            closeButton.onmousemove = function (e) {
+                setMousePosition(e);
+                if (element !== null) {
+                    element.style.width = Math.abs(mouse.x - mouse.startX) + 'px';
+                    element.style.height = Math.abs(mouse.y - mouse.startY) + 'px';
+                    element.style.left = (mouse.x - mouse.startX < 0) ? mouse.x + 'px' : mouse.startX + 'px';
+                    element.style.top = (mouse.y - mouse.startY < 0) ? mouse.y + 'px' : mouse.startY + 'px';
+                }
             }
             canvas.appendChild(closeButton)
             idVar++
@@ -174,6 +192,15 @@
 
                             document.getElementById(btnID).remove()
                             document.getElementById(boxID).remove()
+                        }
+                        closeButton.onmousemove = function (e) {
+                            setMousePosition(e);
+                            if (element !== null) {
+                                element.style.width = Math.abs(mouse.x - mouse.startX) + 'px';
+                                element.style.height = Math.abs(mouse.y - mouse.startY) + 'px';
+                                element.style.left = (mouse.x - mouse.startX < 0) ? mouse.x + 'px' : mouse.startX + 'px';
+                                element.style.top = (mouse.y - mouse.startY < 0) ? mouse.y + 'px' : mouse.startY + 'px';
+                            }
                         }
                         canvas.appendChild(closeButton)
 
