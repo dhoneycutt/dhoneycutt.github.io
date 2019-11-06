@@ -10,7 +10,7 @@
     <div id="canvas">
         <img id="imageID" style="max-height:100%; max-width: 100%" draggable="false" user-select="none" />
     </div>
-    <br />How many human faces are in the image? <input id="inputBox" type="text" value="" /><br />
+    <br />Number of faces:<input id="numFaces" type="text" value="" disabled/><br />
     Place bounding boxes around all faces. Click once to start placing a box, then click again to place the box (do not click and drag).<br />
     <!--<button id="prevBtn" class="btn" onclick="prevImg()">Previous Image</button>-->
     <button id="nextBtn" class="btn" onclick="nextImg()">Next Image</button>
@@ -22,6 +22,7 @@
 <script>
     var i = 0;
     var idVar = 0
+    var numBoxes = 0
     var numFiles = 30;
     var iteration = getUrlVars()["i"]
     document.getElementById("imageID").src = "images_" + iteration + "/0.jpg"
@@ -49,6 +50,7 @@
                 }
             }
             canvas.appendChild(element)
+            numBoxes++
             closeButton = document.createElement('button')
             closeButton.className = 'closeButton'
             closeButton.id = idVar + 'btn'
@@ -65,6 +67,8 @@
 
                 document.getElementById(btnID).remove()
                 document.getElementById(boxID).remove()
+                numBoxes--
+                document.getElementById("numFaces").value = numBoxes
             }
             closeButton.onmousemove = function (e) {
                 setMousePosition(e);
@@ -81,6 +85,7 @@
 
 
         }
+        document.getElementById("numFaces").value = numBoxes
     }
 
     function nextImg() {
@@ -116,6 +121,7 @@
         while (buttons[0]) {
             buttons[0].remove()
         }
+        numBoxes = 0
     }
 
     function initDraw(canvas) {
@@ -192,6 +198,9 @@
 
                             document.getElementById(btnID).remove()
                             document.getElementById(boxID).remove()
+
+                            numBoxes--
+                            document.getElementById("numFaces").value = numBoxes
                         }
                         closeButton.onmousemove = function (e) {
                             setMousePosition(e);
@@ -208,6 +217,8 @@
                         console.log(closeButton)
 
                         idVar++
+                        numBoxes++
+                        document.getElementById("numFaces").value = numBoxes
 
                         element = null;
                         canvas.style.cursor = "default";
