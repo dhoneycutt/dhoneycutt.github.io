@@ -16,7 +16,7 @@
     </p>
     <br />
     <p class="centerP">
-        Place bounding boxes around all faces. Click once to start placing a box, then click again to place the box (do not click and drag).
+        If the system's prediction is incorrect, remove any incorrect bounding boxes and add any missing bounding boxes.<br/>Otherwise, continue to the next image with no changes
     </p>
     <br />
         <!--<button id="prevBtn" class="btn" onclick="prevImg()">Previous Image</button>-->
@@ -34,12 +34,20 @@
     var idVar = 0
     var numBoxes = 0
     var numFiles = 30;
+    var userDiff = 0
+    var userAns = []
+    var imgBoxes = []
     var iteration = getUrlVars()["i"]
     document.getElementById("imageID").src = "images_" + iteration + "/0.jpg"
     initBoxes(iteration, 0)
     initDraw(document.getElementById('canvas'));
 
     function initBoxes(itr, img) {
+        //Set difference to 0
+        userDiff = 0
+        document.getElementById('userVal').style.border = "2px solid black";
+        document.getElementById('userVal').style.color = "black";
+
         var boxes = iterationArray[itr][img]
         for (j = 0; j < boxes.length; j++) {
             element = document.createElement('div');
@@ -79,6 +87,7 @@
                 document.getElementById(boxID).remove()
                 numBoxes--
                 document.getElementById("userVal").value = numBoxes
+                makeDiff()
             }
             closeButton.onmousemove = function (e) {
                 setMousePosition(e);
@@ -102,6 +111,7 @@
     function resetBoxes() {
         clearBoxes()
         initBoxes(iteration, i)
+        imgBoxes = []
     }
 
     function nextImg() {
@@ -112,8 +122,10 @@
             i++
             document.getElementById("imageID").src = "images_" + iteration + "/" + i + ".jpg"
             document.getElementById("userVal").value = ""
+            userAns.push(userDiff)
             clearBoxes()
             initBoxes(iteration, i)
+            console.log(userAns)
         }
     }
     function prevImg() {
@@ -217,6 +229,7 @@
 
                             numBoxes--
                             document.getElementById("userVal").value = numBoxes
+                            makeDiff()
                         }
                         closeButton.onmousemove = function (e) {
                             setMousePosition(e);
@@ -230,11 +243,13 @@
                         canvas.appendChild(closeButton)
 
                         console.log(element)
+                        logBox(element)
                         console.log(closeButton)
 
                         idVar++
                         numBoxes++
                         document.getElementById("userVal").value = numBoxes
+                        makeDiff()
 
                         element = null;
                         canvas.style.cursor = "default";
@@ -253,8 +268,14 @@
             }
             canvas.appendChild(element)
             canvas.style.cursor = "crosshair";
-         
+
         }
+    }
+
+    function makeDiff() {
+      document.getElementById('userVal').style.border = "2px solid red";
+      document.getElementById('userVal').style.color = "red";
+      userDiff = 1;
     }
 
     function getUrlVars() {
@@ -263,5 +284,16 @@
             vars[key] = value;
         });
         return vars;
+    }
+
+    //For generating boxes for json
+    function logBox(element) {
+      var temp = {}
+      temp["left"] = element.style.left
+      temp.top = element.style.top
+      temp.width = element.style.width
+      temp.height = element.style.height
+      imgBoxes.push(temp)
+      localStorage.imgBoxes = JSON.stringify(imgBoxes)
     }
 </script>
