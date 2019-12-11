@@ -10,12 +10,22 @@
     <div id="canvas">
         <img id="imageID" style="max-height:100%; max-width: 100%" draggable="false" user-select="none" />
     </div>
-    <br />Number of faces:<input id="numFaces" type="text" value="" disabled/><br />
-    Place bounding boxes around all faces. Click once to start placing a box, then click again to place the box (do not click and drag).<br />
-    <!--<button id="prevBtn" class="btn" onclick="prevImg()">Previous Image</button>-->
-    <button id="nextBtn" class="btn" onclick="nextImg()">Next Image</button>
-    <!--<button id="clearBtn" class="btn" onclick="clearBoxes()">Clear Boxes</button>-->
-    <script src="boxes.txt"></script>
+    <br />
+    <p class="centerP">
+        System Prediction: <input id="sysPred" type="text" value="" disabled /> Your Answer: <input id="userVal" type="text" value="" disabled />
+    </p>
+    <br />
+    <p class="centerP">
+        Place bounding boxes around all faces. Click once to start placing a box, then click again to place the box (do not click and drag).
+    </p>
+    <br />
+        <!--<button id="prevBtn" class="btn" onclick="prevImg()">Previous Image</button>-->
+    <p class="centerP">
+        <button id="resetBtn" class="btn" onclick="resetBoxes()">Reset Changes</button>
+        <button id="nextBtn" class="btn" onclick="nextImg()">Next Image</button>
+    </p>
+        <!--<button id="clearBtn" class="btn" onclick="clearBoxes()">Clear Boxes</button>-->
+    <script src="boxes.js"></script>
 </body>
 </html>
 
@@ -68,7 +78,7 @@
                 document.getElementById(btnID).remove()
                 document.getElementById(boxID).remove()
                 numBoxes--
-                document.getElementById("numFaces").value = numBoxes
+                document.getElementById("userVal").value = numBoxes
             }
             closeButton.onmousemove = function (e) {
                 setMousePosition(e);
@@ -85,7 +95,13 @@
 
 
         }
-        document.getElementById("numFaces").value = numBoxes
+        document.getElementById("userVal").value = numBoxes
+        document.getElementById("sysPred").value = numBoxes
+    }
+
+    function resetBoxes() {
+        clearBoxes()
+        initBoxes(iteration, i)
     }
 
     function nextImg() {
@@ -95,7 +111,7 @@
         else {
             i++
             document.getElementById("imageID").src = "images_" + iteration + "/" + i + ".jpg"
-            document.getElementById("inputBox").value = ""
+            document.getElementById("userVal").value = ""
             clearBoxes()
             initBoxes(iteration, i)
         }
@@ -107,7 +123,7 @@
         else {
             i--
             document.getElementById("imageID").src = "images/" + i + ".jpg"
-            document.getElementById("inputBox").value = ""
+            document.getElementById("userVal").value = ""
             clearBoxes()
         }
     }
@@ -200,7 +216,7 @@
                             document.getElementById(boxID).remove()
 
                             numBoxes--
-                            document.getElementById("numFaces").value = numBoxes
+                            document.getElementById("userVal").value = numBoxes
                         }
                         closeButton.onmousemove = function (e) {
                             setMousePosition(e);
@@ -218,11 +234,11 @@
 
                         idVar++
                         numBoxes++
-                        document.getElementById("numFaces").value = numBoxes
+                        document.getElementById("userVal").value = numBoxes
 
                         element = null;
                         canvas.style.cursor = "default";
-                        console.log("finsihed.");
+                        console.log("finished.");
                     }
                 }
             }
