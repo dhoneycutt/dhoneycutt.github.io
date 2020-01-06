@@ -119,6 +119,7 @@
 
     function resetBoxes() {
         clearBoxes()
+        console.log(canvas)
         initBoxes(iteration, i)
         imgBoxes = []
     }
@@ -297,10 +298,10 @@
 
     //For generating boxes for json
     function logBox(element) {
-      canvas = document.getElementById('canvas').getBoundingClientRect();
+      canvasLoc = document.getElementById('canvas').getBoundingClientRect();
       var temp = {}
-      temp.left = (parseFloat(element.style.left) - parseFloat(canvas.left)) + "px"
-      temp.top = (parseFloat(element.style.top) - parseFloat(canvas.top)) + "px"
+      temp.left = (parseFloat(element.style.left) - parseFloat(canvasLoc.left)) + "px"
+      temp.top = (parseFloat(element.style.top) - parseFloat(canvasLoc.top)) + "px"
       temp.width = element.style.width
       temp.height = element.style.height
       imgBoxes.push(temp)
