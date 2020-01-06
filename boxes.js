@@ -1,10 +1,14 @@
 // JavaScript source code
 images1 = [
     [
-        {"left":"800px","top":"145px","width":"46px","height":"62px"},{"left":"846px","top":"168px","width":"35px","height":"65px"},{"left":"933px","top":"193px","width":"42px","height":"57px"},{"left":"968px","top":"169px","width":"41px","height":"57px"},{"left":"1057px","top":"201px","width":"32px","height":"47px"},{"left":"1072px","top":"146px","width":"39px","height":"61px"}
+        {"left":"46.5px","top":"110px","width":"99px","height":"110px"},{"left":"10.5px","top":"319px","width":"32px","height":"44px"}
     ],
-    [],
-    [],
+    [
+        {"left":"139.5px","top":"213px","width":"71px","height":"47px"}
+    ],
+    [
+
+    ],
     [
       {"left":"962px","top":"167px","width":"95px","height":"111px"},{"left":"826px","top":"177px","width":"82px","height":"95px"}
     ],

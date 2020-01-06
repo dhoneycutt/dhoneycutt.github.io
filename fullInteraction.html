@@ -30,6 +30,8 @@
 </html>
 
 <script>
+    window.addEventListener('resize', resizeFnc)
+
     var i = 0;
     var idVar = 0
     var numBoxes = 0
@@ -39,8 +41,14 @@
     var imgBoxes = []
     var iteration = getUrlVars()["i"]
     document.getElementById("imageID").src = "images_" + iteration + "/0.jpg"
-    initBoxes(iteration, 0)
+    console.log("hello")
     initDraw(document.getElementById('canvas'));
+    initBoxes(iteration, 0)
+
+    function resizeFnc() {
+      alert("Your input has been reset due to window resizing. Please redo any changes that were made on this image (previous answers are retained)")
+      resetBoxes()
+    }
 
     function initBoxes(itr, img) {
         //Set difference to 0
@@ -49,13 +57,14 @@
         document.getElementById('userVal').style.color = "black";
 
         var boxes = iterationArray[itr][img]
+        var canvasPos = document.getElementById('canvas').getBoundingClientRect();
         for (j = 0; j < boxes.length; j++) {
             element = document.createElement('div');
             element.className = 'rectangle'
             element.id = idVar + 'box'
             element.draggable = 'false'
-            element.style.left = boxes[j].left;
-            element.style.top = boxes[j].top;
+            element.style.left = (parseFloat(boxes[j].left) + parseFloat(canvasPos.left)).toString() + "px"
+            element.style.top = (parseFloat(boxes[j].top) + parseFloat(canvasPos.top)).toString() + "px"
             element.style.width = boxes[j].width;
             element.style.height = boxes[j].height;
             element.onmousemove = function (e) {
@@ -116,7 +125,7 @@
 
     function nextImg() {
         if (i == numFiles - 1) {
-            alert("Last image")
+            window.location.href = "index.html?i=" + iteration
         }
         else {
             i++
@@ -288,9 +297,10 @@
 
     //For generating boxes for json
     function logBox(element) {
+      canvas = document.getElementById('canvas').getBoundingClientRect();
       var temp = {}
-      temp["left"] = element.style.left
-      temp.top = element.style.top
+      temp.left = (parseFloat(element.style.left) - parseFloat(canvas.left)) + "px"
+      temp.top = (parseFloat(element.style.top) - parseFloat(canvas.top)) + "px"
       temp.width = element.style.width
       temp.height = element.style.height
       imgBoxes.push(temp)
