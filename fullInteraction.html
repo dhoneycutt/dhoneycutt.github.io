@@ -39,9 +39,8 @@
     var userDiff = 0
     var userAns = []
     var imgBoxes = []
-    var iteration = getUrlVars()["i"]
+    var iteration = localStorage.iteration
     document.getElementById("imageID").src = "images_" + iteration + "/0.jpg"
-    console.log("hello")
     initDraw(document.getElementById('canvas'));
     initBoxes(iteration, 0)
 
@@ -126,7 +125,8 @@
 
     function nextImg() {
         if (i == numFiles - 1) {
-            window.location.href = "index.html?i=" + iteration
+          localStorage.iteration = iteration + 1
+          window.location.href = "questionnaire.html"
         }
         else {
             i++
@@ -286,14 +286,6 @@
       document.getElementById('userVal').style.border = "2px solid red";
       document.getElementById('userVal').style.color = "red";
       userDiff = 1;
-    }
-
-    function getUrlVars() {
-        var vars = {};
-        var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
-            vars[key] = value;
-        });
-        return vars;
     }
 
     //For generating boxes for json
