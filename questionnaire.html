@@ -1,0 +1,53 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>ALT</title>
+</head>
+<body>
+    <link rel="stylesheet" href="styles.css" />
+    <p class="centerP">
+        Questionnaire goes here
+    </p>
+    <br />
+        <!--<button id="prevBtn" class="btn" onclick="prevImg()">Previous Image</button>-->
+    <p class="centerP">
+        <button id="contBtn" class="btn" onclick="submit()">Continue</button>
+    </p>
+        <!--<button id="clearBtn" class="btn" onclick="clearBoxes()">Clear Boxes</button>-->
+    <script src="boxes.js"></script>
+    <div>Icons made by <a href="https://freeicons.io/profile/714">Raj Dev</a> from <a href="https://www.freeicons.io/">www.freeicons.io</a></div>
+</body>
+</html>
+
+<script>
+
+  //Setup timer to simulate the system implementing the responses
+  implementing = true
+  setTimeout(delayContinue, 60000)  //1 minute delay
+
+  //Setup rotating gear icon
+
+  //Questionnaire completion check
+  const isComplete = (currentValue) => currentValue == 1
+  answered = [1, 1, 1]
+
+
+
+  function delayContinue() {
+    alert("timeout")
+    implementing = false
+  }
+
+  function submit() {
+    if(!answered.every(isComplete)) {
+      alert("You must answer all questions before continuing")
+    }
+    else if (implementing == true) {
+      alert("The system is busy implementing your feedback. This should take no more than a few minutes.")
+    }
+    else {
+      alert("Nothing")
+    }
+  }
+
+</script>
