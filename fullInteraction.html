@@ -39,6 +39,8 @@
     var userDiff = 0
     var userAns = []
     var imgBoxes = []
+    var boxIDs = []
+    var correctIDs = []
     var iteration = localStorage.iteration
     document.getElementById("imageID").src = "images_" + iteration + "/0.jpg"
     initDraw(document.getElementById('canvas'));
@@ -54,6 +56,7 @@
         userDiff = 0
         document.getElementById('userVal').style.border = "2px solid black";
         document.getElementById('userVal').style.color = "black";
+        boxIDs = []
 
         ordCond = parseInt(localStorage.ordCond)
         var boxes = iterationArray[ordCond][itr][img]
@@ -92,9 +95,12 @@
             closeButton.onclick = function (e) {
                 btnID = this.id
                 boxID = parseInt(this.id) + 'box'
+                index = boxIDs.indexOf(parseInt(this.id))
 
                 document.getElementById(btnID).remove()
                 document.getElementById(boxID).remove()
+                if (index !== -1) boxIDs.splice(index, 1);
+
                 numBoxes--
                 document.getElementById("userVal").value = numBoxes
                 makeDiff()
@@ -109,6 +115,7 @@
                 }
             }
             canvas.appendChild(closeButton)
+            boxIDs.push(idVar)
             idVar++
             element = null
 
@@ -116,6 +123,11 @@
         }
         document.getElementById("userVal").value = numBoxes
         document.getElementById("sysPred").value = numBoxes
+        correctIDs = []
+        boxIDs.forEach(function(e) {
+          correctIDs.push(e)
+        })
+        console.log(correctIDs)
     }
 
     function resetBoxes() {
@@ -236,9 +248,11 @@
                         closeButton.onclick = function (e) {
                             btnID = this.id
                             boxID = parseInt(this.id) + 'box'
+                            index = boxIDs.indexOf(parseInt(this.id))
 
                             document.getElementById(btnID).remove()
                             document.getElementById(boxID).remove()
+                            if (index !== -1) boxIDs.splice(index, 1);
 
                             numBoxes--
                             document.getElementById("userVal").value = numBoxes
@@ -259,6 +273,7 @@
                         logBox(element)
                         console.log(closeButton)
 
+                        boxIDs.push(idVar)
                         idVar++
                         numBoxes++
                         document.getElementById("userVal").value = numBoxes
@@ -286,9 +301,29 @@
     }
 
     function makeDiff() {
-      document.getElementById('userVal').style.border = "2px solid red";
-      document.getElementById('userVal').style.color = "red";
-      userDiff = 1;
+      if(checkDiff()) {
+        document.getElementById('userVal').style.border = "2px solid red";
+        document.getElementById('userVal').style.color = "red";
+        userDiff = 1;
+      }
+      else {
+        document.getElementById('userVal').style.border = "2px solid black";
+        document.getElementById('userVal').style.color = "black";
+        userDiff = 0;
+      }
+    }
+
+    function checkDiff() {
+      if(boxIDs.length != correctIDs.length) {
+        return true
+      }
+      boxIDs.forEach(function(e) {
+        if(correctIDs.indexOf(e) == -1) {
+          return true
+        }
+      })
+
+      return false
     }
 
     //For generating boxes for json
