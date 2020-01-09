@@ -36,6 +36,7 @@
 </html>
 
 <script>
+  iteration = parseInt(localStorage.iteration)
   answered = 0
   var continueBtn = document.getElementById("contBtn");
   continueBtn.style.background = "#A9A9A9";
@@ -56,13 +57,15 @@
 
 
   //Setup timer to simulate the system implementing the responses
-  implementing = true
-  setTimeout(delayContinue, 60000)  //1 minute delay
+  implementing = false
+  if(iteration < 2) {
+    implementing = true
+    setTimeout(delayContinue, 60000)  //1 minute delay
 
-  //Setup rotating gear icon
-  i = 1;
-  setInterval(turnGear, 500)
-
+    //Setup rotating gear icon
+    i = 1;
+    setInterval(turnGear, 500)
+  }
   //Questionnaire completion check
   const isComplete = (currentValue) => currentValue == 1
 
@@ -101,7 +104,10 @@
       midQs[parseInt(localStorage.iteration)] = slider1.value
       localStorage.midQs = JSON.stringify(midQs)
       localStorage.iteration = parseInt(localStorage.iteration) + 1
-      if(localStorage.intCond == "2") {
+      if(iteration >= 2) {
+        window.location.href = "prediction.html"
+      }
+      else if(localStorage.intCond == "2") {
         window.location.href = "fullInteraction.html"
       }
       else {

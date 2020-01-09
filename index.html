@@ -6,7 +6,19 @@
     <title>Select Condition</title>
 </head>
 <body>
-    <a href="fullInteraction.html">Full Interaction</a>
+    <a onclick="increase()" href="#">Increasing (0)</a>
+    <br />
+    <a onclick="same()" href="#">No Change (1)</a>
+    <br />
+    <a onclick="decrease()" href="#">Decreasing (2)</a>
+    <br /><br />
+
+    <a onclick="noInteraction()" href="#">No Interaction (0)</a>
+    <br />
+    <a onclick="binaryInteraction()" href="#">Binary Interaction (1)</a>
+    <br />
+    <a onclick="fullInteraction()" href="#">Full Interaction (2)</a>
+    <br />
 
     <br />
     <p class="attribution">
@@ -17,9 +29,34 @@
 </html>
 
 <script>
+  localStorage.clear()
   localStorage.intCond = 2
   localStorage.ordCond = 0
   localStorage.iteration = 0
   localStorage.midQs = JSON.stringify([0, 0, 0])
   localStorage.pAns = JSON.stringify([])
+
+  function increase() {
+    localStorage.ordCond = 0
+  }
+  function same() {
+    localStorage.ordCond = 1
+  }
+  function decrease() {
+    localStorage.ordCond = 2
+  }
+
+  function noInteraction() {
+    localStorage.intCond = 0
+    window.location.href = "binaryInteraction.html"
+  }
+  function binaryInteraction() {
+    localStorage.intCond = 1
+    window.location.href = "binaryInteraction.html"
+  }
+  function fullInteraction() {
+    localStorage.intCond = 2
+    window.location.href = "fullInteraction.html"
+  }
+
 </script>

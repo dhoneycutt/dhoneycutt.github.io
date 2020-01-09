@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>ALT</title>
+</head>
+<body>
+    <link rel="stylesheet" href="styles.css" />
+    <div id="canvas">
+        <img id="imageID" style="max-height:100%; max-width: 100%" draggable="false" user-select="none" />
+    </div>
+    <br />
+    <br />
+    <p class="centerP">
+        Based on your interactions with the system, do you think the system would classify this image correctly?
+    </p>
+    <br />
+        <!--<button id="prevBtn" class="btn" onclick="prevImg()">Previous Image</button>-->
+    <p class="centerP">
+        <button id="agree" class="btn" onclick="agree()">Correct</button>
+        <button id="disagree" class="btn" onclick="disagree()">Incorrect</button>
+    </p>
+        <!--<button id="clearBtn" class="btn" onclick="clearBoxes()">Clear Boxes</button>-->
+    <script src="boxes.js"></script>
+</body>
+</html>
+
+<script>
+    //0 is system is correct, 1 is system is incorrect
+
+    var i = 0;
+    var idVar = 0
+    var numBoxes = 0
+    var numFiles = 20;
+    var userDiff = 0
+    var userAns = []
+    var imgBoxes = []
+    var boxIDs = []
+    var correctIDs = []
+    var iteration = localStorage.iteration
+    document.getElementById("imageID").src = "prediction/0.jpg"
+
+    function agree() {
+      userDiff = 0
+      nextImg()
+    }
+
+    function disagree() {
+      userDiff = 1
+      nextImg()
+    }
+
+    function nextImg() {
+        if (i == numFiles - 1) {
+          pAns = JSON.parse(localStorage.pAns)
+          pAns.push(userAns)
+          localStorage.pAns = JSON.stringify(pAns)
+          window.location.href = "questionnaire.html"
+        }
+        else {
+            i++
+            document.getElementById("imageID").src = "prediction/" + i + ".jpg"
+            userAns.push(userDiff)
+        }
+        console.log(userAns)
+    }
+</script>
