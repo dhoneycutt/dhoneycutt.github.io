@@ -104,7 +104,7 @@ images0_0 = [
         {"left":"239.5px","top":"117px","width":"74px","height":"95px"}
       ],
       [
-        {"left":"221.5px","top":"121px","width":"80px","height":"87px"}
+        {"left":"252px","top":"197px","width":"77px","height":"97px"},{"left":"197px","top":"221px","width":"48px","height":"82px"}
       ],
       [
         {"left":"221.5px","top":"140px","width":"68px","height":"94px"}
@@ -272,7 +272,7 @@ images0_0 = [
         {"left":"137.5px","top":"142px","width":"34px","height":"44px"},{"left":"328.5px","top":"154px","width":"36px","height":"44px"}
       ],
       [
-        {"left":"144.5px","top":"221px","width":"36px","height":"44px"},{"left":"198.5px","top":"103px","width":"34px","height":"55px"}
+        {"left":"144.5px","top":"221px","width":"36px","height":"44px"}
       ],
       [
         {"left":"172.5px","top":"131px","width":"41px","height":"68px"},{"left":"262.5px","top":"181px","width":"47px","height":"55px"}
