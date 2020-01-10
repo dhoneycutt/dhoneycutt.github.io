@@ -6,6 +6,10 @@
 <body>
     <link rel="stylesheet" href="styles.css" />
     <br /><br />
+    <p id="waitMsg" class="centerP">
+
+    </p>
+    <br /><br />
     <p class="centerP">
         How likely do you think the system is at this stage to accurately identify the locations of all faces in an image?
     </p>
@@ -36,6 +40,15 @@
 </html>
 
 <script>
+  waitMsg = document.getElementById("waitMsg")
+  if (localStorage.intCond == "0") {
+    waitMsg.innerHTML = ""
+  }
+  else {
+    waitMsg.innerHTML = "While the system is implementing your feedback, please answer the following question."
+  }
+
+
   iteration = parseInt(localStorage.iteration)
   answered = 0
   var continueBtn = document.getElementById("contBtn");
@@ -58,13 +71,16 @@
 
   //Setup timer to simulate the system implementing the responses
   implementing = false
-  if(iteration < 2) {
+  if(parseInt(localStorage.intCond) > 0) {
     implementing = true
     setTimeout(delayContinue, 60000)  //1 minute delay
 
     //Setup rotating gear icon
     i = 1;
     setInterval(turnGear, 500)
+  }
+  else {
+    document.getElementById("gear").style.display = "none"
   }
   //Questionnaire completion check
   const isComplete = (currentValue) => currentValue == 1
@@ -105,7 +121,7 @@
       localStorage.midQs = JSON.stringify(midQs)
       localStorage.iteration = parseInt(localStorage.iteration) + 1
       if(iteration >= 2) {
-        window.location.href = "prediction.html"
+        window.location.href = "inbetween.html"
       }
       else if(localStorage.intCond == "2") {
         window.location.href = "fullInteraction.html"
