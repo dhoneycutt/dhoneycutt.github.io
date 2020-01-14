@@ -8,7 +8,7 @@
 <body>
     <link rel="stylesheet" href="styles.css" />
     <br /><br /><br /><br /><br />
-    <p class="centerP">
+    <p id="msg" class="centerP">
         Thank you for your input. You will now be taken to another task in which you will be asked to evaluate how you think the system would perform on different images.
     </p>
     <br />
@@ -34,6 +34,10 @@
     var boxIDs = []
     var correctIDs = []
     var iteration = localStorage.iteration
+
+    if(localStorage.intCond == "0") {
+      document.getElementById("msg").innerHTML = "Thank you for your responses. You will now be taken to another task in which you will be asked to evaluate how you think the system would perform on different images."
+    }
 
     function cont() {
       window.location.href = "prediction.html"

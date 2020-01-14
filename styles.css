@@ -8,9 +8,14 @@
 }
 
 #gearDiv {
-  position: fixed;
-  top: 15;
-  right: 15;
+  /* position: absolute; */
+  /* top: 15;
+  right: 15; */
+  width: 500px;
+  height: 10px;
+  border: 10px solid transparent;
+  margin: auto;
+  text-align: center;
 }
 
 /*#imageID {
