@@ -76,27 +76,35 @@
   const isComplete = (currentValue) => currentValue == 1
 
 
-    function submit() {
-        weak = document.getElementById("weak").value
-        comments = document.getElementById("comments").value
-        answered = 1
+  function submit() {
+    weak = document.getElementById("weak").value
+    comments = document.getElementById("comments").value
+    answered = 1
 
-        if (weak == "") {
-            answered = 0
-        }
-        if (comments == "") {
-            answered = 0
-        }
+    if (weak == "") {
+        answered = 0
+    }
+    if (comments == "") {
+        answered = 0
+    }
     if (answered == 0) {
       alert("You must answer all questions before continuing")
     }
     else {
-        localStorage.weak = document.getElementById("weak").value
-        localStorage.comments = document.getElementById("comments").value
-        alert("done")
+        localStorage.weak = JSON.stringify(weak)
+        localStorage.comments = JSON.stringify(comments)
+        complete()
         //window.location.href = "binaryInteraction.html"
-      
+
     }
+  }
+
+  function complete() {
+    //TODO: Output values to json file
+
+    //TODO: Move to final page (what to put here for AMT/SONA I don't know)
+
+    alert("Done")
   }
 
 </script>
