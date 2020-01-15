@@ -6,6 +6,57 @@
     <title>Select Condition</title>
 </head>
 <body>
-    <a href="fullInteraction.html?i=0">Full Interaction</a>
+    <a onclick="increase()" href="#">Increasing (0)</a>
+    <br />
+    <a onclick="same()" href="#">No Change (1)</a>
+    <br />
+    <a onclick="decrease()" href="#">Decreasing (2)</a>
+    <br /><br />
+
+    <a onclick="noInteraction()" href="#">No Interaction (0)</a>
+    <br />
+    <a onclick="binaryInteraction()" href="#">Binary Interaction (1)</a>
+    <br />
+    <a onclick="fullInteraction()" href="#">Full Interaction (2)</a>
+    <br />
+
+    <br />
+    <p class="attribution">
+      All images are from the Open Images Dataset V5, used under <a href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0</a> license.
+      <div>Icons made by <a href="https://freeicons.io/profile/714">Raj Dev</a> from <a href="https://www.freeicons.io/">www.freeicons.io</a></div>
+    </p>
 </body>
 </html>
+
+<script>
+  localStorage.clear()
+  localStorage.intCond = 2
+  localStorage.ordCond = 0
+  localStorage.iteration = 0
+  localStorage.midQs = JSON.stringify([0, 0, 0])
+  localStorage.pAns = JSON.stringify([])
+
+  function increase() {
+    localStorage.ordCond = 0
+  }
+  function same() {
+    localStorage.ordCond = 1
+  }
+  function decrease() {
+    localStorage.ordCond = 2
+  }
+
+  function noInteraction() {
+    localStorage.intCond = 0
+    window.location.href = "binaryInteraction.html"
+  }
+  function binaryInteraction() {
+    localStorage.intCond = 1
+    window.location.href = "binaryInteraction.html"
+  }
+  function fullInteraction() {
+    localStorage.intCond = 2
+    window.location.href = "fullInteraction.html"
+  }
+
+</script>

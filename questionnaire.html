@@ -1,0 +1,137 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>ALT</title>
+</head>
+<body>
+    <link rel="stylesheet" href="styles.css" />
+
+    <br /><br />
+    <p id="waitMsg" class="centerP">
+
+    </p>
+    <div id="gearDiv">
+      <img id="gear" src="gear1.png" title="The system is implemeting your feedback. This should take no more than a few minutes."/>
+    </div>
+    <br /><br /><br /><br />
+    <p class="centerP">
+        How likely do you think the system is at this stage to accurately identify the locations of all faces in an image?
+    </p>
+    <br />
+    <div class="slidecontainer">
+      <input type="range" min="0" max="100" value="50" class="slider" id="q1">
+      <div class="sliderticks">
+        <p>0</p>
+        <p>25</p>
+        <p>50</p>
+        <p>75</p>
+        <p>100</p>
+      </div>
+      <p class="centerP">Answer: <span id="q1Val"></span></p>
+    </div>
+    <br /><br />
+        <!--<button id="prevBtn" class="btn" onclick="prevImg()">Previous Image</button>-->
+    <p class="centerP">
+        <button id="contBtn" class="btn" onclick="submit()">Continue</button>
+    </p>
+    <br />
+        <!--<button id="clearBtn" class="btn" onclick="clearBoxes()">Clear Boxes</button>-->
+    <script src="boxes.js"></script>
+
+</body>
+</html>
+
+<script>
+  waitMsg = document.getElementById("waitMsg")
+  if (localStorage.intCond == "0") {
+    waitMsg.innerHTML = ""
+  }
+  else {
+    waitMsg.innerHTML = "While the system is implementing your feedback, please answer the following question."
+  }
+
+
+  iteration = parseInt(localStorage.iteration)
+  answered = 0
+  var continueBtn = document.getElementById("contBtn");
+  continueBtn.style.background = "#A9A9A9";
+
+  //Handle sliders
+  var slider1 = document.getElementById("q1");
+  slider1.value = 50
+  var output1 = document.getElementById("q1Val");
+  output1.innerHTML = "??"; // Display the default slider value
+
+  // Update the current slider value (each time you drag the slider handle)
+  slider1.onclick = function() {
+    output1.innerHTML = this.value;
+    slider1.className = "sliderA"
+    continueBtn.style.background = "#4CAF50"
+    answered = 1
+  }
+
+
+  //Setup timer to simulate the system implementing the responses
+  implementing = false
+  if(parseInt(localStorage.intCond) > 0) {
+    implementing = true
+    setTimeout(delayContinue, 60000)  //1 minute delay
+
+    //Setup rotating gear icon
+    i = 1;
+    setInterval(turnGear, 500)
+  }
+  else {
+    document.getElementById("gear").style.display = "none"
+  }
+  //Questionnaire completion check
+  const isComplete = (currentValue) => currentValue == 1
+
+
+
+  function delayContinue() {
+    implementing = false
+  }
+
+  function turnGear() {
+    if (implementing == false) {
+      document.getElementById("gear").style.display = "none"
+    }
+    else if (i == 1) {
+      document.getElementById("gear").src = "gear2.png"
+      i = 2
+    }
+    else if (i == 2) {
+      document.getElementById("gear").src = "gear1.png"
+      i = 1
+    }
+  }
+
+  function submit() {
+    //if(!answered.every(isComplete)) {
+    //REMOVE THIS
+    implementing = false
+    if(answered == 0) {
+      alert("You must answer all questions before continuing")
+    }
+    else if (implementing == true) {
+      alert("The system is busy implementing your feedback. This should take no more than a few minutes.")
+    }
+    else {
+      midQs = JSON.parse(localStorage.midQs)
+      midQs[parseInt(localStorage.iteration)] = slider1.value
+      localStorage.midQs = JSON.stringify(midQs)
+      localStorage.iteration = parseInt(localStorage.iteration) + 1
+      if(iteration >= 2) {
+        window.location.href = "inbetween.html"
+      }
+      else if(localStorage.intCond == "2") {
+        window.location.href = "fullInteraction.html"
+      }
+      else {
+        window.location.href = "binaryInteraction.html"
+      }
+    }
+  }
+
+</script>

@@ -39,9 +39,10 @@
     var userDiff = 0
     var userAns = []
     var imgBoxes = []
-    var iteration = getUrlVars()["i"]
+    var boxIDs = []
+    var correctIDs = []
+    var iteration = localStorage.iteration
     document.getElementById("imageID").src = "images_" + iteration + "/0.jpg"
-    console.log("hello")
     initDraw(document.getElementById('canvas'));
     initBoxes(iteration, 0)
 
@@ -56,8 +57,10 @@
         userDiff = 0
         document.getElementById('userVal').style.border = "2px solid black";
         document.getElementById('userVal').style.color = "black";
+        boxIDs = []
 
-        var boxes = iterationArray[itr][img]
+        ordCond = parseInt(localStorage.ordCond)
+        var boxes = iterationArray[ordCond][itr][img]
         var canvasPos = document.getElementById('canvas').getBoundingClientRect();
         for (j = 0; j < boxes.length; j++) {
             element = document.createElement('div');
@@ -65,7 +68,8 @@
             element.id = idVar + 'box'
             element.draggable = 'false'
             element.style.left = (parseFloat(boxes[j].left) + parseFloat(canvasPos.left)).toString() + "px"
-            element.style.top = (parseFloat(boxes[j].top) + parseFloat(canvasPos.top)).toString() + "px"
+            //element.style.top = (parseFloat(boxes[j].top) + parseFloat(canvasPos.top)).toString() + "px"
+            element.style.top = (parseFloat(boxes[j].top) + 8).toString() + "px"
             element.style.width = boxes[j].width;
             element.style.height = boxes[j].height;
             element.onmousemove = function (e) {
@@ -92,9 +96,12 @@
             closeButton.onclick = function (e) {
                 btnID = this.id
                 boxID = parseInt(this.id) + 'box'
+                index = boxIDs.indexOf(parseInt(this.id))
 
                 document.getElementById(btnID).remove()
                 document.getElementById(boxID).remove()
+                if (index !== -1) boxIDs.splice(index, 1);
+
                 numBoxes--
                 document.getElementById("userVal").value = numBoxes
                 makeDiff()
@@ -109,6 +116,7 @@
                 }
             }
             canvas.appendChild(closeButton)
+            boxIDs.push(idVar)
             idVar++
             element = null
 
@@ -116,17 +124,26 @@
         }
         document.getElementById("userVal").value = numBoxes
         document.getElementById("sysPred").value = numBoxes
+        correctIDs = []
+        boxIDs.forEach(function(e) {
+          correctIDs.push(e)
+        })
+        console.log(correctIDs)
     }
 
     function resetBoxes() {
         clearBoxes()
+        console.log(canvas)
         initBoxes(iteration, i)
         imgBoxes = []
     }
 
     function nextImg() {
         if (i == numFiles - 1) {
-            window.location.href = "index.html?i=" + iteration
+          pAns = JSON.parse(localStorage.pAns)
+          pAns.push(userAns)
+          localStorage.pAns = JSON.stringify(pAns)
+          window.location.href = "questionnaire.html"
         }
         else {
             i++
@@ -135,7 +152,6 @@
             userAns.push(userDiff)
             clearBoxes()
             initBoxes(iteration, i)
-            console.log(userAns)
         }
     }
     function prevImg() {
@@ -233,9 +249,11 @@
                         closeButton.onclick = function (e) {
                             btnID = this.id
                             boxID = parseInt(this.id) + 'box'
+                            index = boxIDs.indexOf(parseInt(this.id))
 
                             document.getElementById(btnID).remove()
                             document.getElementById(boxID).remove()
+                            if (index !== -1) boxIDs.splice(index, 1);
 
                             numBoxes--
                             document.getElementById("userVal").value = numBoxes
@@ -256,6 +274,7 @@
                         logBox(element)
                         console.log(closeButton)
 
+                        boxIDs.push(idVar)
                         idVar++
                         numBoxes++
                         document.getElementById("userVal").value = numBoxes
@@ -283,25 +302,37 @@
     }
 
     function makeDiff() {
-      document.getElementById('userVal').style.border = "2px solid red";
-      document.getElementById('userVal').style.color = "red";
-      userDiff = 1;
+      if(checkDiff()) {
+        document.getElementById('userVal').style.border = "2px solid red";
+        document.getElementById('userVal').style.color = "red";
+        userDiff = 1;
+      }
+      else {
+        document.getElementById('userVal').style.border = "2px solid black";
+        document.getElementById('userVal').style.color = "black";
+        userDiff = 0;
+      }
     }
 
-    function getUrlVars() {
-        var vars = {};
-        var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
-            vars[key] = value;
-        });
-        return vars;
+    function checkDiff() {
+      if(boxIDs.length != correctIDs.length) {
+        return true
+      }
+      boxIDs.forEach(function(e) {
+        if(correctIDs.indexOf(e) == -1) {
+          return true
+        }
+      })
+
+      return false
     }
 
     //For generating boxes for json
     function logBox(element) {
-      canvas = document.getElementById('canvas').getBoundingClientRect();
+      canvasLoc = document.getElementById('canvas').getBoundingClientRect();
       var temp = {}
-      temp.left = (parseFloat(element.style.left) - parseFloat(canvas.left)) + "px"
-      temp.top = (parseFloat(element.style.top) - parseFloat(canvas.top)) + "px"
+      temp.left = (parseFloat(element.style.left) - parseFloat(canvasLoc.left)) + "px"
+      temp.top = (parseFloat(element.style.top) - parseFloat(canvasLoc.top)) + "px"
       temp.width = element.style.width
       temp.height = element.style.height
       imgBoxes.push(temp)
