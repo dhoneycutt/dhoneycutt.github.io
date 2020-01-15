@@ -1,0 +1,149 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>ALT</title>
+</head>
+<body>
+    <link rel="stylesheet" href="styles.css" />
+    <div id="canvas">
+        <img id="imageID" style="max-height:100%; max-width: 100%" draggable="false" user-select="none" />
+    </div>
+    <br />
+    <p class="centerP">
+        System Prediction: <input id="sysPred" type="text" value="" disabled />
+    </p>
+    <br />
+    <p class="centerP">
+        Identify whether the system's prediction is correct or not
+    </p>
+    <br />
+        <!--<button id="prevBtn" class="btn" onclick="prevImg()">Previous Image</button>-->
+    <p class="centerP">
+        <button id="agree" class="btn" onclick="agree()">Correct</button>
+        <button id="disagree" class="btn" onclick="disagree()">Incorrect</button>
+    </p>
+        <!--<button id="clearBtn" class="btn" onclick="clearBoxes()">Clear Boxes</button>-->
+    <script src="boxes.js"></script>
+</body>
+</html>
+
+<script>
+    window.addEventListener('resize', resizeFnc)
+
+    var i = 0;
+    var idVar = 0
+    var numBoxes = 0
+    var numFiles = 30;
+    var userDiff = 0
+    var userAns = []
+    var imgBoxes = []
+    var boxIDs = []
+    var correctIDs = []
+    var iteration = localStorage.iteration
+    document.getElementById("imageID").src = "images_" + iteration + "/0.jpg"
+    initBoxes(iteration, 0)
+
+    function resizeFnc() {
+      //alert("Your input has been reset due to window resizing. Please redo any changes that were made on this image (previous answers are retained)")
+      resetBoxes()
+    }
+
+    function initBoxes(itr, img) {
+        //Set difference to 0
+        userDiff = 0
+        boxIDs = []
+
+        ordCond = parseInt(localStorage.ordCond)
+        var boxes = iterationArray[ordCond][itr][img]
+        var canvasPos = document.getElementById('canvas').getBoundingClientRect();
+        for (j = 0; j < boxes.length; j++) {
+            element = document.createElement('div');
+            element.className = 'rectangle'
+            element.id = idVar + 'box'
+            element.draggable = 'false'
+            element.style.left = (parseFloat(boxes[j].left) + parseFloat(canvasPos.left)).toString() + "px"
+            //element.style.top = (parseFloat(boxes[j].top) + parseFloat(canvasPos.top)).toString() + "px"
+            element.style.top = (parseFloat(boxes[j].top) + 8).toString() + "px"
+            element.style.width = boxes[j].width;
+            element.style.height = boxes[j].height;
+
+            canvas.appendChild(element)
+            numBoxes++
+
+            idVar++
+            element = null
+
+
+        }
+        document.getElementById("sysPred").value = numBoxes
+        correctIDs = []
+        boxIDs.forEach(function(e) {
+          correctIDs.push(e)
+        })
+    }
+
+    function agree() {
+      userDiff = 0
+      nextImg()
+    }
+
+    function disagree() {
+      userDiff = 1
+      nextImg()
+    }
+
+    function resetBoxes() {
+        clearBoxes()
+        initBoxes(iteration, i)
+        imgBoxes = []
+    }
+
+    function nextImg() {
+        if (i == numFiles - 1) {
+          pAns = JSON.parse(localStorage.pAns)
+          pAns.push(userAns)
+          localStorage.pAns = JSON.stringify(pAns)
+          window.location.href = "questionnaire.html"
+        }
+        else {
+            i++
+            document.getElementById("imageID").src = "images_" + iteration + "/" + i + ".jpg"
+            userAns.push(userDiff)
+            clearBoxes()
+            initBoxes(iteration, i)
+        }
+    }
+    function prevImg() {
+        if (i == 1) {
+            alert("First image")
+        }
+        else {
+            i--
+            document.getElementById("imageID").src = "images/" + i + ".jpg"
+            clearBoxes()
+        }
+    }
+
+    function clearBoxes() {
+        var boxes = document.getElementsByClassName('rectangle')
+        while (boxes[0]) {
+            boxes[0].remove()
+        }
+        numBoxes = 0
+    }
+
+
+    //For generating boxes for json
+    function logBox(element) {
+      canvasLoc = document.getElementById('canvas').getBoundingClientRect();
+      var temp = {}
+      temp.left = (parseFloat(element.style.left) - parseFloat(canvasLoc.left)) + "px"
+      temp.top = (parseFloat(element.style.top) - parseFloat(canvasLoc.top)) + "px"
+      temp.width = element.style.width
+      temp.height = element.style.height
+      imgBoxes.push(temp)
+      localStorage.imgBoxes = JSON.stringify(imgBoxes)
+    }
+</script>
