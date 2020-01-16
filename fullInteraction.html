@@ -22,7 +22,7 @@
         <!--<button id="prevBtn" class="btn" onclick="prevImg()">Previous Image</button>-->
     <p class="centerP">
         <button id="resetBtn" class="btn" onclick="resetBoxes()">Reset Changes</button>
-        <button id="nextBtn" class="btn" onclick="nextImg()">Next Image</button>
+        <button id="nextBtn" class="btn" onclick="nextImg()">The system is correct</button>
     </p>
         <!--<button id="clearBtn" class="btn" onclick="clearBoxes()">Clear Boxes</button>-->
     <script src="boxes.js"></script>
@@ -176,6 +176,7 @@
             buttons[0].remove()
         }
         numBoxes = 0
+        document.getElementById('nextBtn').innerText = "The system is correct"
     }
 
     function initDraw(canvas) {
@@ -305,26 +306,31 @@
       if(checkDiff()) {
         document.getElementById('userVal').style.border = "2px solid red";
         document.getElementById('userVal').style.color = "red";
+        document.getElementById('nextBtn').innerText = "The system is incorrect"
         userDiff = 1;
       }
       else {
         document.getElementById('userVal').style.border = "2px solid black";
         document.getElementById('userVal').style.color = "black";
         userDiff = 0;
+        document.getElementById('nextBtn').innerText = "The system is correct"
       }
     }
 
     function checkDiff() {
+      val = false
       if(boxIDs.length != correctIDs.length) {
         return true
       }
       boxIDs.forEach(function(e) {
+        console.log(correctIDs.indexOf(e))
         if(correctIDs.indexOf(e) == -1) {
-          return true
+          console.log("here")
+          val = true
         }
       })
 
-      return false
+      return val
     }
 
     //For generating boxes for json
