@@ -18,10 +18,18 @@
     <a onclick="binaryInteraction()" href="#">Binary Interaction (1)</a>
     <br />
     <a onclick="fullInteraction()" href="#">Full Interaction (2)</a>
+    <br /><br />
+
+    <a onclick="turk()" href="#">Turk</a>
+    <br />
+    <a onclick="SONA()" href="#">SONA</a>
+    <br />
+    <a onclick="none()" href="#">None</a>
     <br />
 
+
     <br /><br /><br /><br />
-    <a href="demographics.html">Start Task</a>
+    <a href="consentform.html">Start Task</a>
     <br />
 
     <br />
@@ -58,6 +66,16 @@
   }
   function fullInteraction() {
     localStorage.intCond = 2
+  }
+
+  function turk() {
+    localStorage.from = "T"
+  }
+  function SONA() {
+    localStorage.from = "S"
+  }
+  function none() {
+    localStorage.from = "N"
   }
 
 </script>

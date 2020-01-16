@@ -11,13 +11,13 @@
     <p class="centerP">
       This is the consent form for the study which will give you details on the general task, risks, compensation, and contact information in case you have any questions. Please read it carefully, make sure you download a copy for yourself, and if you agree to participate based on the conditions, click I AGREE TO PARTICIPATE and proceed.
       <br /><br />
-    <iframe src="forms/Consent_Form___MTurk.pdf" width="75%" height="500px">
+    <iframe id="form" src="forms/Consent_Form___Email.pdf" width="75%" height="500px">
         </iframe>
       </p>
         <!--<button id="prevBtn" class="btn" onclick="prevImg()">Previous Image</button>-->
     <p class="centerP">
         <button id="agree" class="btn" onclick="cont()">I AGREE TO PARTICIPATE</button>
-        <button id="disagree" class="btn" onclick="cont()">I DO NOT AGREE TO PARTICIPATE</button>
+        <button id="disagree" class="btn" onclick="disagree()">I DO NOT AGREE TO PARTICIPATE</button>
     </p>
         <!--<button id="clearBtn" class="btn" onclick="clearBoxes()">Clear Boxes</button>-->
     <script src="boxes.js"></script>
@@ -38,17 +38,19 @@
     var correctIDs = []
     var iteration = localStorage.iteration
 
-    if(localStorage.intCond == "0") {
-      document.getElementById("msg").innerHTML = "Thank you for your responses. You will now be taken to another task in which you will be asked to evaluate how you think the system would perform on different images."
+    if(localStorage.from == "T") {
+      document.getElementById("form").src = "forms/Consent_Form___MTurk.pdf"
+    }
+    else if (localStorage.from == "S") {
+      document.getElementById("form").src = "forms/Consent_Form___SONA.pdf"
     }
 
     function cont() {
-      window.location.href = "prediction.html"
+      window.location.href = "demographics.html"
     }
 
     function disagree() {
-      userDiff = 1
-      nextImg()
+      alert("You must agree to continue, this message should be replaced with an exit page or something")
     }
 
     function nextImg() {
