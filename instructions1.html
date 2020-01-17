@@ -11,18 +11,18 @@
         <img id="imageID" style="max-height:100%; max-width: 100%" draggable="false" user-select="none" />
     </div>
     <br />
-    <p class="centerP">
+    <!-- <p class="centerP">
         System Prediction: <input id="sysPred" type="text" value="" disabled /> Your Answer: <input id="userVal" type="text" value="" disabled />
     </p>
-    <br />
-    <p class="centerP">
+    <br /> -->
+    <p id="textP" class="centerP">
         If the system's prediction is incorrect, remove any incorrect bounding boxes and add any missing bounding boxes.<br/>Otherwise, continue to the next image with no changes
     </p>
     <br />
         <!--<button id="prevBtn" class="btn" onclick="prevImg()">Previous Image</button>-->
     <p class="centerP">
-        <button id="resetBtn" class="btn" onclick="resetBoxes()">Reset Changes</button>
-        <button id="nextBtn" class="btn" onclick="nextImg()">The system is correct</button>
+        <button id="prevBtn" class="btn" onclick="previous()">Previous</button>
+        <button id="nextBtn" class="btn" onclick="next()">Next</button>
     </p>
         <!--<button id="clearBtn" class="btn" onclick="clearBoxes()">Clear Boxes</button>-->
     <script src="boxes.js"></script>
@@ -30,7 +30,24 @@
 </html>
 
 <script>
-    window.addEventListener('resize', resizeFnc)
+    //window.addEventListener('resize', resizeFnc)
+    docCanvas = document.getElementById("canvas")
+    prevBtn = document.getElementById("prevBtn")
+    textP = document.getElementById("textP")
+    docCanvas.style.height = "0px"
+
+    tutorialText = [
+      "In this task, you will be interacting with a face detection system.\nYou will be shown the system's classification of a series of images, then asked to provide feedback about the accuracy of that classification.",
+      "Periodically during the task the system will update how it classifies images based on the feedback you gave, with the goal of improving its accuracy as you correct its outputs.",
+      "For the purposes of this system, a correct classification is defined as having bounding boxes placed over each human face in the image with no bounding boxes placed on regions of the image that do not contain a human face",
+      "This is an example of a correctly classified image.\nThere are no human faces in the image, and there are no bounding boxes placed on the image",
+      "This is another example of a correctly classified image.\nAll faces were identified with bounding boxes placed on them.\nNote that for the purposes of this system as long as the box contains the face it is considered correct (i.e. the box could encompass the face alone or the entire head and both would be valid output)"
+      "This is an example of an incorrectly classified image.\nThere are no human faces in the image, but the system misidentified a region of the image as if it contained a human face",
+      "This is another incorrectly classified image.\nThe image contains a human face that the system did not identify.\nAdditionally, the system placed a bounding box in an incorrect location.\nEither of these errors would make the classification incorrect",
+      "You will now be shown how to provide your feedback to the system."
+    ]
+    pos = 0
+    textP.innerText = tutorialText[pos]
 
     var i = 0;
     var idVar = 0
@@ -43,8 +60,10 @@
     var correctIDs = []
     var iteration = localStorage.iteration
     document.getElementById("imageID").src = "tutorial/0.jpg"
-    initDraw(document.getElementById('canvas'));
-    initBoxes(iteration, 0)
+    //initDraw(document.getElementById('canvas'));
+    //initBoxes(iteration, 0)
+
+
 
     function resizeFnc() {
       clearBoxes()
@@ -55,8 +74,6 @@
     function initBoxes(itr, img) {
         //Set difference to 0
         userDiff = 0
-        document.getElementById('userVal').style.border = "2px solid black";
-        document.getElementById('userVal').style.color = "black";
         boxIDs = []
 
         ordCond = parseInt(localStorage.ordCond)
@@ -72,68 +89,34 @@
             element.style.top = (parseFloat(boxes[j].top) + 8).toString() + "px"
             element.style.width = boxes[j].width;
             element.style.height = boxes[j].height;
-            element.onmousemove = function (e) {
-                setMousePosition(e);
-                if (element !== null) {
-                    element.style.width = Math.abs(mouse.x - mouse.startX) + 'px';
-                    element.style.height = Math.abs(mouse.y - mouse.startY) + 'px';
-                    element.style.left = (mouse.x - mouse.startX < 0) ? mouse.x + 'px' : mouse.startX + 'px';
-                    element.style.top = (mouse.y - mouse.startY < 0) ? mouse.y + 'px' : mouse.startY + 'px';
-                }
-            }
+
             canvas.appendChild(element)
             numBoxes++
-            closeButton = document.createElement('button')
-            closeButton.className = 'closeButton'
-            closeButton.id = idVar + 'btn'
-            closeButton.draggable = 'false'
-            closeButton.style.left = parseInt(element.style.left) + parseInt(element.style.width) - 3 + 'px'
-            closeButton.style.top = parseInt(element.style.top) - 10 + 'px'
-            closeButton.innerText = "X"
-            //closeButton.style.width = "10px"
-            //closeButton.style.height = "10px"
-            closeButton.style.fill = "blue"
-            closeButton.onclick = function (e) {
-                btnID = this.id
-                boxID = parseInt(this.id) + 'box'
-                index = boxIDs.indexOf(parseInt(this.id))
 
-                document.getElementById(btnID).remove()
-                document.getElementById(boxID).remove()
-                if (index !== -1) boxIDs.splice(index, 1);
-
-                numBoxes--
-                document.getElementById("userVal").value = numBoxes
-                makeDiff()
-            }
-            closeButton.onmousemove = function (e) {
-                setMousePosition(e);
-                if (element !== null) {
-                    element.style.width = Math.abs(mouse.x - mouse.startX) + 'px';
-                    element.style.height = Math.abs(mouse.y - mouse.startY) + 'px';
-                    element.style.left = (mouse.x - mouse.startX < 0) ? mouse.x + 'px' : mouse.startX + 'px';
-                    element.style.top = (mouse.y - mouse.startY < 0) ? mouse.y + 'px' : mouse.startY + 'px';
-                }
-            }
-            canvas.appendChild(closeButton)
-            boxIDs.push(idVar)
             idVar++
             element = null
 
 
         }
-        document.getElementById("userVal").value = numBoxes
         document.getElementById("sysPred").value = numBoxes
         correctIDs = []
         boxIDs.forEach(function(e) {
           correctIDs.push(e)
         })
-        console.log(correctIDs)
+    }
+
+    function agree() {
+      userDiff = 0
+      nextImg()
+    }
+
+    function disagree() {
+      userDiff = 1
+      nextImg()
     }
 
     function resetBoxes() {
         clearBoxes()
-        console.log(canvas)
         initBoxes(iteration, i)
         imgBoxes = []
     }
@@ -148,7 +131,6 @@
         else {
             i++
             document.getElementById("imageID").src = "images_" + iteration + "/" + i + ".jpg"
-            document.getElementById("userVal").value = ""
             userAns.push(userDiff)
             clearBoxes()
             initBoxes(iteration, i)
@@ -161,7 +143,6 @@
         else {
             i--
             document.getElementById("imageID").src = "images/" + i + ".jpg"
-            document.getElementById("userVal").value = ""
             clearBoxes()
         }
     }
@@ -171,167 +152,9 @@
         while (boxes[0]) {
             boxes[0].remove()
         }
-        var buttons = document.getElementsByClassName('closeButton')
-        while (buttons[0]) {
-            buttons[0].remove()
-        }
         numBoxes = 0
-        document.getElementById('nextBtn').innerText = "The system is correct"
     }
 
-    function initDraw(canvas) {
-        function setMousePosition(e) {
-            var ev = e || window.event; //Moz || IE
-            if (ev.pageX) { //Moz
-                mouse.x = ev.pageX + window.pageXOffset;
-                mouse.y = ev.pageY + window.pageYOffset;
-            } else if (ev.clientX) { //IE
-                mouse.x = ev.clientX + document.body.scrollLeft;
-                mouse.y = ev.clientY + document.body.scrollTop;
-            }
-        };
-
-        var mouse = {
-            x: 0,
-            y: 0,
-            startX: 0,
-            startY: 0
-        };
-        var element = null;
-
-        imageID.onmousemove = function (e) {
-            setMousePosition(e);
-            if (element !== null) {
-                element.style.width = Math.abs(mouse.x - mouse.startX) + 'px';
-                element.style.height = Math.abs(mouse.y - mouse.startY) + 'px';
-                element.style.left = (mouse.x - mouse.startX < 0) ? mouse.x + 'px' : mouse.startX + 'px';
-                element.style.top = (mouse.y - mouse.startY < 0) ? mouse.y + 'px' : mouse.startY + 'px';
-            }
-        }
-
-        imageID.onmousedown = function (e) {
-            console.log("begun.");
-            mouse.startX = mouse.x;
-            mouse.startY = mouse.y;
-            element = document.createElement('div');
-            element.className = 'rectangle'
-            element.id = idVar + 'box'
-            element.draggable = 'false'
-            element.style.left = mouse.x + 'px';
-            element.style.top = mouse.y + 'px';
-            element.onmouseup = function (e) {
-                if (element != null) {
-                    if (element.style.width == "" || element.style.height == "") {
-                        element.remove()
-                    }
-                    else {
-
-                        //Create circle
-
-                        //closeButton = document.createElement('div');
-                        //closeButton.className = 'circle'
-                        //closeButton.id = 'circle' + idVar
-                        //closeButton.draggable = 'false'
-                        //closeButton.style.cx = element.style.left
-                        //closeButton.style.cy = element.style.top
-                        //closeButton.style.r = '400px'
-                        //closeButton.style.fill = "blue"
-                        //canvas.appendChild(closeButton)
-                        closeButton = document.createElement('button')
-                        closeButton.className = 'closeButton'
-                        closeButton.id = idVar + 'btn'
-                        closeButton.draggable = 'false'
-                        closeButton.style.left = parseInt(element.style.left) + parseInt(element.style.width) - 3 + 'px'
-                        closeButton.style.top = parseInt(element.style.top) - 10 + 'px'
-                        closeButton.innerText = "X"
-                        //closeButton.style.width = "10px"
-                        //closeButton.style.height = "10px"
-                        closeButton.style.fill = "blue"
-                        closeButton.onclick = function (e) {
-                            btnID = this.id
-                            boxID = parseInt(this.id) + 'box'
-                            index = boxIDs.indexOf(parseInt(this.id))
-
-                            document.getElementById(btnID).remove()
-                            document.getElementById(boxID).remove()
-                            if (index !== -1) boxIDs.splice(index, 1);
-
-                            numBoxes--
-                            document.getElementById("userVal").value = numBoxes
-                            makeDiff()
-                        }
-                        closeButton.onmousemove = function (e) {
-                            setMousePosition(e);
-                            if (element !== null) {
-                                element.style.width = Math.abs(mouse.x - mouse.startX) + 'px';
-                                element.style.height = Math.abs(mouse.y - mouse.startY) + 'px';
-                                element.style.left = (mouse.x - mouse.startX < 0) ? mouse.x + 'px' : mouse.startX + 'px';
-                                element.style.top = (mouse.y - mouse.startY < 0) ? mouse.y + 'px' : mouse.startY + 'px';
-                            }
-                        }
-                        canvas.appendChild(closeButton)
-
-                        console.log(element)
-                        logBox(element)
-                        console.log(closeButton)
-
-                        boxIDs.push(idVar)
-                        idVar++
-                        numBoxes++
-                        document.getElementById("userVal").value = numBoxes
-                        makeDiff()
-
-                        element = null;
-                        canvas.style.cursor = "default";
-                        console.log("finished.");
-                    }
-                }
-            }
-            element.onmousemove = function (e) {
-                setMousePosition(e);
-                if (element !== null) {
-                    element.style.width = Math.abs(mouse.x - mouse.startX) + 'px';
-                    element.style.height = Math.abs(mouse.y - mouse.startY) + 'px';
-                    element.style.left = (mouse.x - mouse.startX < 0) ? mouse.x + 'px' : mouse.startX + 'px';
-                    element.style.top = (mouse.y - mouse.startY < 0) ? mouse.y + 'px' : mouse.startY + 'px';
-                }
-            }
-            canvas.appendChild(element)
-            canvas.style.cursor = "crosshair";
-
-        }
-    }
-
-    function makeDiff() {
-      if(checkDiff()) {
-        document.getElementById('userVal').style.border = "2px solid red";
-        document.getElementById('userVal').style.color = "red";
-        document.getElementById('nextBtn').innerText = "The system is incorrect"
-        userDiff = 1;
-      }
-      else {
-        document.getElementById('userVal').style.border = "2px solid black";
-        document.getElementById('userVal').style.color = "black";
-        userDiff = 0;
-        document.getElementById('nextBtn').innerText = "The system is correct"
-      }
-    }
-
-    function checkDiff() {
-      val = false
-      if(boxIDs.length != correctIDs.length) {
-        return true
-      }
-      boxIDs.forEach(function(e) {
-        console.log(correctIDs.indexOf(e))
-        if(correctIDs.indexOf(e) == -1) {
-          console.log("here")
-          val = true
-        }
-      })
-
-      return val
-    }
 
     //For generating boxes for json
     function logBox(element) {
