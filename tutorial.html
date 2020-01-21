@@ -15,21 +15,21 @@
         System Prediction: <input id="sysPred" type="text" value="" disabled /> Your Answer: <input id="userVal" type="text" value="" disabled />
     </p>
     <br />
-    <p class="centerP">
-        To provide feedback to the system, you will be asked to evaluate the correctness of the system's classification of a series of images.
-        <br />
-        If the classification is correct, press the "The system is correct" button without making any changes to the system.
-        <br />
-        If the classification is incorrect, remove any incorrect bounding boxes by pressing the blue X button and add any missing bounding boxes by clicking and dragging on the image.
-        <br />
-        Once your corrections have been made, press the "The system is incorrect" button to continue, or press "Reset changes" to undo your Changes
+    <p id="textP" class="centerP">
+
     </p>
     <br />
-        <!--<button id="prevBtn" class="btn" onclick="prevImg()">Previous Image</button>-->
-    <p class="centerP">
-        <button id="resetBtn" class="btn" onclick="resetBoxes()">Reset Changes</button>
-        <button id="nextBtn" class="btn" onclick="nextImg()">The system is correct</button>
+        <!--<button id="tutPrev" class="btn" onclick="prevImg()">Previous Image</button>-->
+    <p id="buttonP" class="centerP">
+      <button id="resetBtn" class="btn" onclick="resetBoxes()">Reset Changes</button>
+      <button id="nextBtn" class="btn" onclick="nextImg()">The system is correct</button>
     </p>
+    <br />
+    <p class="centerP">
+      <button id="tutPrev" class="btn" onclick="previous()">Previous</button>
+      <button id="tutNext" class="btn" onclick="next()">Next</button>
+    </p>
+
         <!--<button id="clearBtn" class="btn" onclick="clearBoxes()">Clear Boxes</button>-->
     <script src="boxes.js"></script>
 </body>
@@ -51,6 +51,81 @@
     document.getElementById("imageID").src = "images_" + iteration + "/0.jpg"
     initDraw(document.getElementById('canvas'));
     initBoxes(iteration, 0)
+
+    canvasDiv = document.getElementById("canvas")
+    syspredP = document.getElementById("sysPredP")
+    tutPrev = document.getElementById("tutPrev")
+    tutNext = document.getElementById("tutNext")
+    resetBtn = document.getElementById("resetBtn")
+    nextBtn = document.getElementById("nextBtn")
+    textP = document.getElementById("textP")
+    tutImg = document.getElementById("imageID")
+    buttonP = document.getElementById("buttonP")
+    sysPredP.style.display = "none"
+    canvasDiv.style.display = "none"
+    buttonP.style.display = "none"
+
+    tutorialText = ["To provide feedback to the system, you will be asked to evaluate the correctness of the system's classification of a series of images.","When the classification is correct, press the \"The system is correct\" button without making any changes to the image.","If the classification is incorrect, remove any incorrect bounding boxes by pressing the blue X button and add any missing bounding boxes by clicking and dragging on the image.\nOnce your corrections have been made, press the \"The system is incorrect\" button to continue, or press \"Reset changes\" to undo your Changes"]
+    tutorialImg = ["tutorial/0.jpg", "tutorial/0.jpg", "tutorial/0.jpg", "tutorial/0.jpg", "tutorial/1.jpg", "tutorial/0.jpg", "tutorial/1.jpg", "tutorial/0.jpg"]
+    correctAns = []
+
+    pos = 0
+    textP.innerText = tutorialText[pos]
+    //sysPredP.style.display = "block"
+
+    tutPrev.style.background = "#A9A9A9"
+    tutPrev.disabled = true;
+
+    function next() {
+      tutPrev.style.background = "#4CAF50"
+      tutPrev.disabled = false;
+      if(pos < tutorialText.length - 1) {
+        pos++
+        textP.innerText = tutorialText[pos]
+        if (pos > 0) {
+          canvasDiv.style.display = "block"
+          sysPredP.style.display = "block"
+          buttonP.style.display = "block"
+          tutImg.src = tutorialImg[pos]
+          initBoxes(pos)
+        }
+        if (pos == tutorialText.length - 1) {
+
+          docCanvas.style.height = "0px"
+        }
+      }
+      else {
+        if(cond == "2") {
+          window.location.href = "tutorial.html"
+        }
+        else {
+          window.location.href = "binaryInteraction.html"
+        }
+      }
+    }
+
+    function previous() {
+      if(pos > 0) {
+        pos--
+        if(pos == 0) {
+          tutPrev.style.background = "#A9A9A9"
+          tutPrev.disabled = true;
+          canvasDiv.style.display = "none"
+          sysPredP.style.display = "none"
+          buttonP.style.display = "none"
+        }
+        textP.innerText = tutorialText[pos]
+        tutImg.src = tutorialImg[pos]
+        if (pos > 2) {
+          docCanvas.style.width = "500px"
+          docCanvas.style.height = "400px"
+          initBoxes(pos)
+        }
+      }
+      else {
+        alert("Beginning of tutorial text")
+      }
+    }
 
     function resizeFnc() {
       clearBoxes()
@@ -145,20 +220,23 @@
     }
 
     function nextImg() {
-        if (i == numFiles - 1) {
-          pAns = JSON.parse(localStorage.pAns)
-          pAns.push(userAns)
-          localStorage.pAns = JSON.stringify(pAns)
-          window.location.href = "questionnaire.html"
-        }
-        else {
-            i++
-            document.getElementById("imageID").src = "images_" + iteration + "/" + i + ".jpg"
-            document.getElementById("userVal").value = ""
-            userAns.push(userDiff)
-            clearBoxes()
-            initBoxes(iteration, i)
-        }
+      if (userDiff == 0) {
+        alert("You selected that the system is correct. Answers in this section are not recorded, ")
+      }
+        // if (i == numFiles - 1) {
+        //   pAns = JSON.parse(localStorage.pAns)
+        //   pAns.push(userAns)
+        //   localStorage.pAns = JSON.stringify(pAns)
+        //   window.location.href = "questionnaire.html"
+        // }
+        // else {
+        //     i++
+        //     document.getElementById("imageID").src = "images_" + iteration + "/" + i + ".jpg"
+        //     document.getElementById("userVal").value = ""
+        //     userAns.push(userDiff)
+        //     clearBoxes()
+        //     initBoxes(iteration, i)
+        // }
     }
     function prevImg() {
         if (i == 1) {
