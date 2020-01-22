@@ -42,6 +42,8 @@
   iteration = parseInt(localStorage.iteration)
   answered = 0
   var continueBtn = document.getElementById("contBtn");
+  var today = new Date();
+  localStorage.endTime = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
   //continueBtn.style.background = "#A9A9A9";
 
   //Handle sliders
