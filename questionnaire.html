@@ -42,6 +42,17 @@
 </html>
 
 <script>
+  iteration == localStorage.iteration
+  if (iteration == "0") {
+    localStorage.time0 = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+  }
+  if (iteration == "1") {
+    localStorage.time1 = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+  }
+  if (iteration == "2") {
+    localStorage.time2 = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+  }
+
   waitMsg = document.getElementById("waitMsg")
   if (localStorage.intCond == "0") {
     waitMsg.innerHTML = ""
