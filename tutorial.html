@@ -25,7 +25,7 @@
       <button id="nextBtn" class="btn" onclick="nextImg()">The system is correct</button>
     </p>
     <br />
-    <p class="centerP">
+    <p id="nextP" class="centerP">
       <button id="tutPrev" class="btn" onclick="previous()">Previous</button>
       <button id="tutNext" class="btn" onclick="next()">Next</button>
     </p>
@@ -38,7 +38,7 @@
 <script>
     window.addEventListener('resize', resizeFnc)
 
-    var i = 0;
+    var i = -1;
     var idVar = 0
     var numBoxes = 0
     var numFiles = 30;
@@ -50,7 +50,7 @@
     var iteration = localStorage.iteration
     document.getElementById("imageID").src = "images_" + iteration + "/0.jpg"
     initDraw(document.getElementById('canvas'));
-    initBoxes(iteration, 0)
+    initBoxes(iteration, 1)
 
     canvasDiv = document.getElementById("canvas")
     syspredP = document.getElementById("sysPredP")
@@ -59,14 +59,16 @@
     resetBtn = document.getElementById("resetBtn")
     nextBtn = document.getElementById("nextBtn")
     textP = document.getElementById("textP")
+    nextP = document.getElementById("nextP")
     tutImg = document.getElementById("imageID")
     buttonP = document.getElementById("buttonP")
     sysPredP.style.display = "none"
     canvasDiv.style.display = "none"
     buttonP.style.display = "none"
+    tutPrev.style.display = "none"
 
-    tutorialText = ["To provide feedback to the system, you will be asked to evaluate the correctness of the system's classification of a series of images.","When the classification is correct, press the \"The system is correct\" button without making any changes to the image.","If the classification is incorrect, remove any incorrect bounding boxes by pressing the blue X button and add any missing bounding boxes by clicking and dragging on the image.\nOnce your corrections have been made, press the \"The system is incorrect\" button to continue, or press \"Reset changes\" to undo your Changes"]
-    tutorialImg = ["tutorial/0.jpg", "tutorial/0.jpg", "tutorial/0.jpg", "tutorial/0.jpg", "tutorial/1.jpg", "tutorial/0.jpg", "tutorial/1.jpg", "tutorial/0.jpg"]
+    tutorialText = ["To provide feedback to the system, you will be asked to evaluate the correctness of the system's classification of a series of images.","When the classification is correct, press the \"The system is correct\" button without making any changes to the image.","If the classification is incorrect, remove any incorrect bounding boxes by pressing the blue X button and add any missing bounding boxes by clicking and dragging on the image.\nOnce your corrections have been made, press the \"The system is incorrect\" button to continue, or press \"Reset changes\" to undo your Changes\nNote that your responses are not being recorded at this stage, so feel free to experiment with the system until you feel comfortable and do not worry about the accuracy of this response.","You will now be taken to the task.\nRemember that the system will update based on your feedback, so please pay attention to your responses.\nThere will be quality control questions included, so be sure to give as accurate responses as possible."]
+    tutorialImg = ["tutorial/0.jpg", "tutorial/0.jpg", "tutorial/1.jpg", "tutorial/0.jpg", "tutorial/1.jpg", "tutorial/0.jpg", "tutorial/1.jpg", "tutorial/0.jpg"]
     correctAns = []
 
     pos = 0
@@ -79,7 +81,8 @@
     function next() {
       tutPrev.style.background = "#4CAF50"
       tutPrev.disabled = false;
-      if(pos < tutorialText.length - 1) {
+      nextP.style.display = "none"
+      if(pos < 2) {
         pos++
         textP.innerText = tutorialText[pos]
         if (pos > 0) {
@@ -87,7 +90,7 @@
           sysPredP.style.display = "block"
           buttonP.style.display = "block"
           tutImg.src = tutorialImg[pos]
-          initBoxes(pos)
+          // initBoxes(pos)
         }
         if (pos == tutorialText.length - 1) {
 
@@ -95,12 +98,7 @@
         }
       }
       else {
-        if(cond == "2") {
-          window.location.href = "tutorial.html"
-        }
-        else {
-          window.location.href = "binaryInteraction.html"
-        }
+        window.location.href = "fullInteraction.html"
       }
     }
 
@@ -128,9 +126,19 @@
     }
 
     function resizeFnc() {
-      clearBoxes()
-      alert("Your input has been reset due to window resizing. Please redo any changes that were made on this image (previous answers are retained)")
-      resetBoxes()
+      if(userDiff == 1) {
+        if(pos == 1) {
+          clearBoxes()
+          alert("Your input has been reset due to window resizing. Please redo any changes that were made on this image (previous answers are retained)")
+          initBoxes(iteration, 1)
+        }
+
+      }
+      else {
+        clearBoxes()
+        alert("Your input has been reset due to window resizing. Please redo any changes that were made on this image (previous answers are retained)")
+        resetBoxes()
+      }
     }
 
     function initBoxes(itr, img) {
@@ -215,13 +223,41 @@
     function resetBoxes() {
         clearBoxes()
         console.log(canvas)
-        initBoxes(iteration, i)
+        if(pos == 1) {
+          initBoxes(iteration, 1)
+        }
+        else {
+          initBoxes(iteration, 0)
+        }
         imgBoxes = []
     }
 
     function nextImg() {
-      if (userDiff == 0) {
-        alert("You selected that the system is correct. Answers in this section are not recorded, ")
+      if (pos == 1) {
+        if (userDiff == 1) {
+          alert("Please answer that the system is correct (reset the changes and select \"The system is correct\")")
+        }
+        else {
+          pos++
+          textP.innerText = tutorialText[pos]
+          tutImg.src = tutorialImg[pos]
+          initBoxes(iteration, 0)
+        }
+      }
+      else if (pos == 2) {
+        if(userDiff == 0) {
+          alert("Please answer that the system is incorrect (remove the existing bounding box and add at least one new bounding box to the image to continue)")
+        }
+        else {
+          clearBoxes()
+          pos++
+          textP.innerText = tutorialText[pos]
+          tutImg.src = tutorialImg[pos]
+          sysPredP.style.display = "none"
+          canvasDiv.style.display = "none"
+          buttonP.style.display = "none"
+          nextP.style.display = "block"
+        }
       }
         // if (i == numFiles - 1) {
         //   pAns = JSON.parse(localStorage.pAns)
