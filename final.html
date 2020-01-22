@@ -6,44 +6,43 @@
 <body>
     <link rel="stylesheet" href="styles.css" />
 
-    <br /><br />
     <p class="centerP">
-        Please answer the following questions about the system.
-    </p>
-    <br /><br />
-    <p class="centerP">
-        Did you notice any weaknesses within the system?
+        Output:
     </p>
     <br />
     <p class="centerP">
-        <textarea id="weak"></textarea>
+        <textarea id="output"></textarea>
     </p>
-    <br /><br />
-    <p class="centerP">
-        Do you have any additional comments about the system or this task?
-    </p>
-    <br />
-    <p class="centerP">
-        <textarea id="comments"></textarea>
-    </p>
-    <br /><br />
-        <!--<button id="prevBtn" class="btn" onclick="prevImg()">Previous Image</button>-->
-    <p class="centerP">
-        <button id="contBtn" class="btn" onclick="submit()">Submit</button>
-    </p>
-    <br />
-        <!--<button id="clearBtn" class="btn" onclick="clearBoxes()">Clear Boxes</button>-->
     <script src="boxes.js"></script>
 
 </body>
 </html>
 
 <script>
-  iteration = parseInt(localStorage.iteration)
-  answered = 0
-  var continueBtn = document.getElementById("contBtn");
-  var today = new Date();
-  localStorage.endTime = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+  var output = {}
+  output.preQ = {}
+  output.postQ = {}
+  output.time = {}
+
+  output.preQ.age = localStorage.age
+  output.preQ.CVWeakness = localStorage.CVWeakness
+  output.preQ.education = localStorage.education
+  output.from = localStorage.from
+  output.postQ.comments = localStorage.comments
+  output.postQ.weak = localStorage.weak
+  output.time.end = localStorage.endTime
+  output.preQ.gender = localStorage.gender
+  output.intCond = localStorage.intCond
+  output.midQs = localStorage.midQs
+  output.preQ.MLExp = localStorage.MLExp
+  output.ordCond = localStorage.ordCond
+  output.pAns = localStorage.pAns
+  output.time.start = localStorage.startTime
+  output.time.first = localStorage.time0
+  output.time.second = localStorage.time1
+  output.time.third = localStorage.time2
+
+  document.getElementById("output").value = JSON.stringify(output)
   //continueBtn.style.background = "#A9A9A9";
 
   //Handle sliders
@@ -106,7 +105,7 @@
 
     //TODO: Move to final page (what to put here for AMT/SONA I don't know)
 
-    window.location.href = "final.html"
+    alert("Done")
   }
 
 </script>
