@@ -95,7 +95,7 @@
                   //closeButton = document.createElement('div');
                   //closeButton.className = 'circle'
                   //closeButton.id = 'circle' + idVar
-                  //closeButton.draggable = 'false'
+                  //closeButton.draggable = false
                   //closeButton.style.cx = element.style.left
                   //closeButton.style.cy = element.style.top
                   //closeButton.style.r = '400px'
@@ -104,7 +104,7 @@
                   closeButton = document.createElement('button')
                   closeButton.className = 'closeButton'
                   closeButton.id = idVar + 'btn'
-                  closeButton.draggable = 'false'
+                  closeButton.draggable = false
                   closeButton.style.left = parseInt(element.style.left) + parseInt(element.style.width) - 3 + 'px'
                   closeButton.style.top = parseInt(element.style.top) - 10 + 'px'
                   closeButton.innerText = "X"
@@ -159,7 +159,7 @@
             element = document.createElement('div');
             element.className = 'rectangle'
             element.id = idVar + 'box'
-            element.draggable = 'false'
+            element.draggable = false
             element.style.left = mouse.x + 'px';
             element.style.top = mouse.y + 'px';
             element.onmouseup = function (e) {
@@ -174,7 +174,7 @@
                         //closeButton = document.createElement('div');
                         //closeButton.className = 'circle'
                         //closeButton.id = 'circle' + idVar
-                        //closeButton.draggable = 'false'
+                        //closeButton.draggable = false
                         //closeButton.style.cx = element.style.left
                         //closeButton.style.cy = element.style.top
                         //closeButton.style.r = '400px'
@@ -183,7 +183,7 @@
                         closeButton = document.createElement('button')
                         closeButton.className = 'closeButton'
                         closeButton.id = idVar + 'btn'
-                        closeButton.draggable = 'false'
+                        closeButton.draggable = false
                         closeButton.style.left = parseInt(element.style.left) + parseInt(element.style.width) - 3 + 'px'
                         closeButton.style.top = parseInt(element.style.top) - 10 + 'px'
                         closeButton.innerText = "X"
@@ -258,7 +258,7 @@
                 element = document.createElement('div');
                 element.className = 'rectangle'
                 element.id = idVar + 'box'
-                element.draggable = 'false'
+                element.draggable = false
                 element.style.left = (parseFloat(boxes[j].left) + parseFloat(canvasPos.left)).toString() + "px"
                 //element.style.top = (parseFloat(boxes[j].top) + parseFloat(canvasPos.top)).toString() + "px"
                 element.style.top = (parseFloat(boxes[j].top) + 8).toString() + "px"
@@ -278,7 +278,7 @@
                 closeButton = document.createElement('button')
                 closeButton.className = 'closeButton'
                 closeButton.id = idVar + 'btn'
-                closeButton.draggable = 'false'
+                closeButton.draggable = false
                 closeButton.style.left = parseInt(element.style.left) + parseInt(element.style.width) - 3 + 'px'
                 closeButton.style.top = parseInt(element.style.top) - 10 + 'px'
                 closeButton.innerText = "X"
