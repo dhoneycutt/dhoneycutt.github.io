@@ -10,9 +10,8 @@
     <div id="canvas">
         <img id="imageID" style="max-height:100%; max-width: 100%" draggable="false" user-select="none" />
     </div>
-    <br />
     <p class="centerP">
-        System Prediction: <input id="sysPred" type="text" value="" disabled /> Your Answer: <input id="userVal" type="text" value="" disabled />
+        Human Faces Found: <input id="sysPred" type="text" value="" disabled /> Your Answer: <input id="userVal" type="text" value="" disabled />
     </p>
     <br />
     <p class="centerP">
@@ -261,7 +260,7 @@
                 element.draggable = false
                 element.style.left = (parseFloat(boxes[j].left) + parseFloat(canvasPos.left)).toString() + "px"
                 //element.style.top = (parseFloat(boxes[j].top) + parseFloat(canvasPos.top)).toString() + "px"
-                element.style.top = (parseFloat(boxes[j].top) + 8).toString() + "px"
+                element.style.top = (parseFloat(boxes[j].top) - 62).toString() + "px"
                 element.style.width = boxes[j].width;
                 element.style.height = boxes[j].height;
                 element.onmousemove = function (e) {
@@ -414,7 +413,7 @@
       canvasLoc = document.getElementById('canvas').getBoundingClientRect();
       var temp = {}
       temp.left = (parseFloat(element.style.left) - parseFloat(canvasLoc.left)) + "px"
-      temp.top = (parseFloat(element.style.top) - parseFloat(canvasLoc.top)) + "px"
+      temp.top = (parseFloat(element.style.top) - parseFloat(canvasLoc.top) + 70) + "px"
       temp.width = element.style.width
       temp.height = element.style.height
       imgBoxes.push(temp)

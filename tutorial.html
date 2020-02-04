@@ -47,10 +47,9 @@
     var imgBoxes = []
     var boxIDs = []
     var correctIDs = []
-    var iteration = localStorage.iteration
+    var iteration = localStorage.iterationg
     document.getElementById("imageID").src = "images_" + iteration + "/0.jpg"
-    initDraw(document.getElementById('canvas'));
-    initBoxes(iteration, 1)
+
 
     canvasDiv = document.getElementById("canvas")
     syspredP = document.getElementById("sysPredP")
@@ -62,68 +61,88 @@
     nextP = document.getElementById("nextP")
     tutImg = document.getElementById("imageID")
     buttonP = document.getElementById("buttonP")
+    canvasDiv.style.height = "350px"
+    canvasDiv.style.width = "700px"
     sysPredP.style.display = "none"
-    canvasDiv.style.display = "none"
-    buttonP.style.display = "none"
-    tutPrev.style.display = "none"
 
-    tutorialText = ["To provide feedback to the system, you will be asked to evaluate the correctness of the system's classification of a series of images.","When the classification is correct, press the \"The system is correct\" button without making any changes to the image.","If the classification is incorrect, remove any incorrect bounding boxes by pressing the blue X button and add any missing bounding boxes by clicking and dragging on the image.\nOnce your corrections have been made, press the \"The system is incorrect\" button to continue, or press \"Reset changes\" to undo your Changes\nNote that your responses are not being recorded at this stage, so feel free to experiment with the system until you feel comfortable and do not worry about the accuracy of this response.","You will now be taken to the task.\nRemember that the system will update based on your feedback, so please pay attention to your responses.\nThere will be quality control questions included, so be sure to give as accurate responses as possible."]
-    tutorialImg = ["tutorial/0.jpg", "tutorial/0.jpg", "tutorial/1.jpg", "tutorial/0.jpg", "tutorial/1.jpg", "tutorial/0.jpg", "tutorial/1.jpg", "tutorial/0.jpg"]
+    buttonP.style.display = "none"
+
+    tutorialText = ["When you see a system error, you can correct it by removing incorrect boxes and/or adding missing boxes to the image.","If the system placed a box in an incorrect location, you can remove it by clicking the X button on the top right of the box.", "Practice: Please remove the box from this image.", "If the system missed a human face, you can add the missing box to the image by clicking and dragging.", "Practice: Please add a box anywhere on the black square.", "To say that the system is correct for an image, simply press the \"The system is correct\" button without making any changes.", "To say that the system made an error for an image, correct the position of the bounding boxes and press the \"The system is incorrect\" button.", "If you placed or removed boxes by mistake, press the \"Reset changes\" button to return to saying that the system is correct.", "Remember that your responses will be used to update the system's algorithms several times during the task, so please answer as accurately as possible.\nAdditionally, poor quality in your responses may affect your compensation."]
+    // tutorialText = ["When you see a system error, you can correct it by removing incorrect boxes and adding missing boxes to the image.","When the classification is correct, press the \"The system is correct\" button without making any changes to the image.","If the classification is incorrect, remove any incorrect bounding boxes by pressing the blue X button and add any missing bounding boxes by clicking and dragging on the image.\nOnce your corrections have been made, press the \"The system is incorrect\" button to continue, or press \"Reset changes\" to undo your Changes\nNote that your responses are not being recorded at this stage, so feel free to experiment with the system until you feel comfortable and do not worry about the accuracy of this response.","You will now be taken to the task.\nRemember that the system will update based on your feedback, so please pay attention to your responses.\nThere will be quality control questions included, so be sure to give as accurate responses as possible."
+    tutorialImg = ["NA", "tutorial/removeBox.gif", "tutorial/blank.jpg", "tutorial/addBox.gif", "tutorial/blank.jpg", "tutorial/correct.jpg", "tutorial/incorrect.jpg", "tutorial/reset.jpg", "NA"]
+    boxArr = [[], [], [{"left":"319.6000061035156px","top":"157px","width":"61px","height":"83px"}], [], [], [], [], [], []]
     correctAns = []
+    tutorialBlock = [0, 0, 1, 0, 1, 0, 0, 0, 0]
+
+    initDraw(document.getElementById('canvas'), 0);
+
 
     pos = 0
     textP.innerText = tutorialText[pos]
+    tutImg.src = tutorialImg[pos]
+    canvasDiv.style.height = "0px"
     //sysPredP.style.display = "block"
 
-    tutPrev.style.background = "#A9A9A9"
-    tutPrev.disabled = true;
-
     function next() {
-      tutPrev.style.background = "#4CAF50"
-      tutPrev.disabled = false;
-      nextP.style.display = "none"
-      if(pos < 2) {
+      tutPrev.innerText = "Previous"
+      if(pos < tutorialText.length - 1) {
         pos++
         textP.innerText = tutorialText[pos]
-        if (pos > 0) {
-          canvasDiv.style.display = "block"
-          sysPredP.style.display = "block"
-          buttonP.style.display = "block"
-          tutImg.src = tutorialImg[pos]
-          // initBoxes(pos)
-        }
-        if (pos == tutorialText.length - 1) {
 
-          docCanvas.style.height = "0px"
+        if(tutorialBlock[pos]) {
+          tutNext.style.background = "#A9A9A9"
+          tutNext.disabled = true;
+          tutNext.title = "Follow the instructions to continue"
         }
+
+        if (tutorialImg[pos] == "NA") {
+          canvasDiv.style.height = "0px"
+          clearBoxes()
+        }
+        else if (pos >= 5) {
+          canvasDiv.style.height = "200px"
+          tutImg.src = tutorialImg[pos]
+          clearBoxes()
+          initDraw(document.getElementById('canvas'), pos)
+        }
+        else {
+          canvasDiv.style.height = "350px"
+          tutImg.src = tutorialImg[pos]
+          clearBoxes()
+          initDraw(document.getElementById('canvas'), pos)
+        }
+
       }
       else {
-        var today = new Date();
-        localStorage.startTime = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-        window.location.href = "fullInteraction.html"
+        window.location.href = "sure.html"
       }
     }
 
     function previous() {
       if(pos > 0) {
         pos--
-        if(pos == 0) {
-          tutPrev.style.background = "#A9A9A9"
-          tutPrev.disabled = true;
-          canvasDiv.style.display = "none"
-          sysPredP.style.display = "none"
-          buttonP.style.display = "none"
-        }
         textP.innerText = tutorialText[pos]
         tutImg.src = tutorialImg[pos]
-        if (pos > 2) {
-          docCanvas.style.width = "500px"
-          docCanvas.style.height = "400px"
-          initBoxes(pos)
+        if (tutorialImg[pos] == "NA") {
+          canvasDiv.style.height = "0px"
+          clearBoxes()
+        }
+        else if (pos >= 5) {
+          canvasDiv.style.height = "200px"
+          tutImg.src = tutorialImg[pos]
+          clearBoxes()
+          initDraw(document.getElementById('canvas'), pos)
+        }
+        else {
+          canvasDiv.style.height = "350px"
+          tutImg.src = tutorialImg[pos]
+          clearBoxes()
+          initDraw(document.getElementById('canvas'), pos)
         }
       }
       else {
-        alert("Beginning of tutorial text")
+        localStorage.tutPos = "end"
+        window.location.href = "instructions.html"
       }
     }
 
@@ -132,7 +151,7 @@
         if(pos == 1) {
           clearBoxes()
           alert("Your input has been reset due to window resizing. Please redo any changes that were made on this image (previous answers are retained)")
-          initBoxes(iteration, 1)
+          initDraw(document.getElementById('canvas'), pos)
         }
 
       }
@@ -143,93 +162,95 @@
       }
     }
 
-    function initBoxes(itr, img) {
-        //Set difference to 0
-        userDiff = 0
-        document.getElementById('userVal').style.border = "2px solid black";
-        document.getElementById('userVal').style.color = "black";
-        boxIDs = []
+    // function initBoxes(itr, img) {
+    //     //Set difference to 0
+    //     userDiff = 0
+    //     document.getElementById('userVal').style.border = "2px solid black";
+    //     document.getElementById('userVal').style.color = "black";
+    //     boxIDs = []
+    //
+    //     ordCond = parseInt(localStorage.ordCond)
+    //     var boxes = iterationArray[ordCond][itr][img]
+    //     var canvasPos = document.getElementById('canvas').getBoundingClientRect();
+    //     for (j = 0; j < boxes.length; j++) {
+    //         element = document.createElement('div');
+    //         element.className = 'rectangle'
+    //         element.id = idVar + 'box'
+    //         element.draggable = 'false'
+    //         element.style.left = (parseFloat(boxes[j].left) + parseFloat(canvasPos.left)).toString() + "px"
+    //         //element.style.top = (parseFloat(boxes[j].top) + parseFloat(canvasPos.top)).toString() + "px"
+    //         element.style.top = (parseFloat(boxes[j].top) - 62).toString() + "px"
+    //         element.style.width = boxes[j].width;
+    //         element.style.height = boxes[j].height;
+    //         element.onmousemove = function (e) {
+    //             setMousePosition(e);
+    //             if (element !== null) {
+    //                 element.style.width = Math.abs(mouse.x - mouse.startX) + 'px';
+    //                 element.style.height = Math.abs(mouse.y - mouse.startY) + 'px';
+    //                 element.style.left = (mouse.x - mouse.startX < 0) ? mouse.x + 'px' : mouse.startX + 'px';
+    //                 element.style.top = (mouse.y - mouse.startY < 0) ? mouse.y + 'px' : mouse.startY + 'px';
+    //             }
+    //         }
+    //         canvas.appendChild(element)
+    //         numBoxes++
+    //         closeButton = document.createElement('button')
+    //         closeButton.className = 'closeButton'
+    //         closeButton.id = idVar + 'btn'
+    //         closeButton.draggable = 'false'
+    //         closeButton.style.left = parseInt(element.style.left) + parseInt(element.style.width) - 3 + 'px'
+    //         closeButton.style.top = parseInt(element.style.top) - 10 + 'px'
+    //         closeButton.innerText = "X"
+    //         //closeButton.style.width = "10px"
+    //         //closeButton.style.height = "10px"
+    //         closeButton.style.fill = "blue"
+    //         closeButton.onclick = function (e) {
+    //             btnID = this.id
+    //             boxID = parseInt(this.id) + 'box'
+    //             index = boxIDs.indexOf(parseInt(this.id))
+    //
+    //             document.getElementById(btnID).remove()
+    //             document.getElementById(boxID).remove()
+    //             if (index !== -1) boxIDs.splice(index, 1);
+    //
+    //             numBoxes--
+    //             document.getElementById("userVal").value = numBoxes
+    //             makeDiff()
+    //         }
+    //         closeButton.onmousemove = function (e) {
+    //             setMousePosition(e);
+    //             if (element !== null) {
+    //                 element.style.width = Math.abs(mouse.x - mouse.startX) + 'px';
+    //                 element.style.height = Math.abs(mouse.y - mouse.startY) + 'px';
+    //                 element.style.left = (mouse.x - mouse.startX < 0) ? mouse.x + 'px' : mouse.startX + 'px';
+    //                 element.style.top = (mouse.y - mouse.startY < 0) ? mouse.y + 'px' : mouse.startY + 'px';
+    //             }
+    //         }
+    //         canvas.appendChild(closeButton)
+    //         boxIDs.push(idVar)
+    //         idVar++
+    //         element = null
+    //
+    //
+    //     }
+    //     document.getElementById("userVal").value = numBoxes
+    //     document.getElementById("sysPred").value = numBoxes
+    //     correctIDs = []
+    //     boxIDs.forEach(function(e) {
+    //       correctIDs.push(e)
+    //     })
+    //     console.log(correctIDs)
+    // }
 
-        ordCond = parseInt(localStorage.ordCond)
-        var boxes = iterationArray[ordCond][itr][img]
-        var canvasPos = document.getElementById('canvas').getBoundingClientRect();
-        for (j = 0; j < boxes.length; j++) {
-            element = document.createElement('div');
-            element.className = 'rectangle'
-            element.id = idVar + 'box'
-            element.draggable = 'false'
-            element.style.left = (parseFloat(boxes[j].left) + parseFloat(canvasPos.left)).toString() + "px"
-            //element.style.top = (parseFloat(boxes[j].top) + parseFloat(canvasPos.top)).toString() + "px"
-            element.style.top = (parseFloat(boxes[j].top) + 8).toString() + "px"
-            element.style.width = boxes[j].width;
-            element.style.height = boxes[j].height;
-            element.onmousemove = function (e) {
-                setMousePosition(e);
-                if (element !== null) {
-                    element.style.width = Math.abs(mouse.x - mouse.startX) + 'px';
-                    element.style.height = Math.abs(mouse.y - mouse.startY) + 'px';
-                    element.style.left = (mouse.x - mouse.startX < 0) ? mouse.x + 'px' : mouse.startX + 'px';
-                    element.style.top = (mouse.y - mouse.startY < 0) ? mouse.y + 'px' : mouse.startY + 'px';
-                }
-            }
-            canvas.appendChild(element)
-            numBoxes++
-            closeButton = document.createElement('button')
-            closeButton.className = 'closeButton'
-            closeButton.id = idVar + 'btn'
-            closeButton.draggable = 'false'
-            closeButton.style.left = parseInt(element.style.left) + parseInt(element.style.width) - 3 + 'px'
-            closeButton.style.top = parseInt(element.style.top) - 10 + 'px'
-            closeButton.innerText = "X"
-            //closeButton.style.width = "10px"
-            //closeButton.style.height = "10px"
-            closeButton.style.fill = "blue"
-            closeButton.onclick = function (e) {
-                btnID = this.id
-                boxID = parseInt(this.id) + 'box'
-                index = boxIDs.indexOf(parseInt(this.id))
 
-                document.getElementById(btnID).remove()
-                document.getElementById(boxID).remove()
-                if (index !== -1) boxIDs.splice(index, 1);
-
-                numBoxes--
-                document.getElementById("userVal").value = numBoxes
-                makeDiff()
-            }
-            closeButton.onmousemove = function (e) {
-                setMousePosition(e);
-                if (element !== null) {
-                    element.style.width = Math.abs(mouse.x - mouse.startX) + 'px';
-                    element.style.height = Math.abs(mouse.y - mouse.startY) + 'px';
-                    element.style.left = (mouse.x - mouse.startX < 0) ? mouse.x + 'px' : mouse.startX + 'px';
-                    element.style.top = (mouse.y - mouse.startY < 0) ? mouse.y + 'px' : mouse.startY + 'px';
-                }
-            }
-            canvas.appendChild(closeButton)
-            boxIDs.push(idVar)
-            idVar++
-            element = null
-
-
-        }
-        document.getElementById("userVal").value = numBoxes
-        document.getElementById("sysPred").value = numBoxes
-        correctIDs = []
-        boxIDs.forEach(function(e) {
-          correctIDs.push(e)
-        })
-        console.log(correctIDs)
-    }
 
     function resetBoxes() {
         clearBoxes()
         console.log(canvas)
         if(pos == 1) {
-          initBoxes(iteration, 1)
+          initDraw(document.getElementById('canvas'), pos)
         }
         else {
-          initBoxes(iteration, 0)
+          initDraw(document.getElementById('canvas'), pos)
         }
         imgBoxes = []
     }
@@ -243,7 +264,7 @@
           pos++
           textP.innerText = tutorialText[pos]
           tutImg.src = tutorialImg[pos]
-          initBoxes(iteration, 0)
+          initDraw(document.getElementById('canvas'), pos)
         }
       }
       else if (pos == 2) {
@@ -256,7 +277,7 @@
           textP.innerText = tutorialText[pos]
           tutImg.src = tutorialImg[pos]
           sysPredP.style.display = "none"
-          canvasDiv.style.display = "none"
+
           buttonP.style.display = "none"
           nextP.style.display = "block"
         }
@@ -301,7 +322,7 @@
         document.getElementById('nextBtn').innerText = "The system is correct"
     }
 
-    function initDraw(canvas) {
+    function initDraw(canvas, pos) {
         function setMousePosition(e) {
             var ev = e || window.event; //Moz || IE
             if (ev.pageX) { //Moz
@@ -331,6 +352,76 @@
             }
         }
 
+        imageID.onmouseup = function(e) {
+          console.log("img")
+          if (element != null) {
+              if (element.style.width == "" || element.style.height == "") {
+                  element.remove()
+              }
+              else {
+
+                  //Create circle
+
+                  //closeButton = document.createElement('div');
+                  //closeButton.className = 'circle'
+                  //closeButton.id = 'circle' + idVar
+                  //closeButton.draggable = false
+                  //closeButton.style.cx = element.style.left
+                  //closeButton.style.cy = element.style.top
+                  //closeButton.style.r = '400px'
+                  //closeButton.style.fill = "blue"
+                  //canvas.appendChild(closeButton)
+                  closeButton = document.createElement('button')
+                  closeButton.className = 'closeButton'
+                  closeButton.id = idVar + 'btn'
+                  closeButton.draggable = false
+                  closeButton.style.left = parseInt(element.style.left) + parseInt(element.style.width) - 3 + 'px'
+                  closeButton.style.top = parseInt(element.style.top) - 10 + 'px'
+                  closeButton.innerText = "X"
+                  //closeButton.style.width = "10px"
+                  //closeButton.style.height = "10px"
+                  closeButton.style.fill = "blue"
+                  closeButton.onmousedown = function (e) {
+                      btnID = this.id
+                      boxID = parseInt(this.id) + 'box'
+                      index = boxIDs.indexOf(parseInt(this.id))
+
+                      document.getElementById(btnID).remove()
+                      document.getElementById(boxID).remove()
+                      if (index !== -1) boxIDs.splice(index, 1);
+
+                      numBoxes--
+                      document.getElementById("userVal").value = numBoxes
+                      makeDiff()
+                  }
+                  closeButton.onmousemove = function (e) {
+                      setMousePosition(e);
+                      if (element !== null) {
+                          element.style.width = Math.abs(mouse.x - mouse.startX) + 'px';
+                          element.style.height = Math.abs(mouse.y - mouse.startY) + 'px';
+                          element.style.left = (mouse.x - mouse.startX < 0) ? mouse.x + 'px' : mouse.startX + 'px';
+                          element.style.top = (mouse.y - mouse.startY < 0) ? mouse.y + 'px' : mouse.startY + 'px';
+                      }
+                  }
+                  canvas.appendChild(closeButton)
+
+                  console.log(element)
+                  logBox(element)
+                  console.log(closeButton)
+
+                  boxIDs.push(idVar)
+                  idVar++
+                  numBoxes++
+                  document.getElementById("userVal").value = numBoxes
+                  makeDiff()
+
+                  element = null;
+                  canvas.style.cursor = "default";
+                  console.log("finished.");
+              }
+          }
+        }
+
         imageID.onmousedown = function (e) {
             console.log("begun.");
             mouse.startX = mouse.x;
@@ -338,7 +429,7 @@
             element = document.createElement('div');
             element.className = 'rectangle'
             element.id = idVar + 'box'
-            element.draggable = 'false'
+            element.draggable = false
             element.style.left = mouse.x + 'px';
             element.style.top = mouse.y + 'px';
             element.onmouseup = function (e) {
@@ -353,7 +444,7 @@
                         //closeButton = document.createElement('div');
                         //closeButton.className = 'circle'
                         //closeButton.id = 'circle' + idVar
-                        //closeButton.draggable = 'false'
+                        //closeButton.draggable = false
                         //closeButton.style.cx = element.style.left
                         //closeButton.style.cy = element.style.top
                         //closeButton.style.r = '400px'
@@ -362,14 +453,14 @@
                         closeButton = document.createElement('button')
                         closeButton.className = 'closeButton'
                         closeButton.id = idVar + 'btn'
-                        closeButton.draggable = 'false'
+                        closeButton.draggable = false
                         closeButton.style.left = parseInt(element.style.left) + parseInt(element.style.width) - 3 + 'px'
                         closeButton.style.top = parseInt(element.style.top) - 10 + 'px'
                         closeButton.innerText = "X"
                         //closeButton.style.width = "10px"
                         //closeButton.style.height = "10px"
                         closeButton.style.fill = "blue"
-                        closeButton.onclick = function (e) {
+                        closeButton.onmousedown = function (e) {
                             btnID = this.id
                             boxID = parseInt(this.id) + 'box'
                             index = boxIDs.indexOf(parseInt(this.id))
@@ -422,13 +513,94 @@
             canvas.style.cursor = "crosshair";
 
         }
+
+        function initBoxes(pos) {
+            //Set difference to 0
+            userDiff = 0
+            document.getElementById('userVal').style.border = "2px solid black";
+            document.getElementById('userVal').style.color = "black";
+            boxIDs = []
+
+            ordCond = parseInt(localStorage.ordCond)
+            var boxes = boxArr[pos]
+            var canvasPos = document.getElementById('canvas').getBoundingClientRect();
+            for (j = 0; j < boxes.length; j++) {
+                element = document.createElement('div');
+                element.className = 'rectangle'
+                element.id = idVar + 'box'
+                element.draggable = false
+                element.style.left = (parseFloat(boxes[j].left) + parseFloat(canvasPos.left)).toString() + "px"
+                //element.style.top = (parseFloat(boxes[j].top) + parseFloat(canvasPos.top)).toString() + "px"
+                element.style.top = (parseFloat(boxes[j].top) - 62).toString() + "px"
+                element.style.width = boxes[j].width;
+                element.style.height = boxes[j].height;
+                element.onmousemove = function (e) {
+                    setMousePosition(e);
+                    if (element !== null) {
+                        element.style.width = Math.abs(mouse.x - mouse.startX) + 'px';
+                        element.style.height = Math.abs(mouse.y - mouse.startY) + 'px';
+                        element.style.left = (mouse.x - mouse.startX < 0) ? mouse.x + 'px' : mouse.startX + 'px';
+                        element.style.top = (mouse.y - mouse.startY < 0) ? mouse.y + 'px' : mouse.startY + 'px';
+                    }
+                }
+                canvas.appendChild(element)
+                numBoxes++
+                closeButton = document.createElement('button')
+                closeButton.className = 'closeButton'
+                closeButton.id = idVar + 'btn'
+                closeButton.draggable = false
+                closeButton.style.left = parseInt(element.style.left) + parseInt(element.style.width) - 3 + 'px'
+                closeButton.style.top = parseInt(element.style.top) - 10 + 'px'
+                closeButton.innerText = "X"
+                //closeButton.style.width = "10px"
+                //closeButton.style.height = "10px"
+                closeButton.style.fill = "blue"
+                closeButton.onmousedown = function (e) {
+                    btnID = this.id
+                    boxID = parseInt(this.id) + 'box'
+                    index = boxIDs.indexOf(parseInt(this.id))
+
+                    document.getElementById(btnID).remove()
+                    document.getElementById(boxID).remove()
+                    if (index !== -1) boxIDs.splice(index, 1);
+
+                    numBoxes--
+                    document.getElementById("userVal").value = numBoxes
+                    makeDiff()
+                }
+                closeButton.onmousemove = function (e) {
+                    setMousePosition(e);
+                    if (element !== null) {
+                        element.style.width = Math.abs(mouse.x - mouse.startX) + 'px';
+                        element.style.height = Math.abs(mouse.y - mouse.startY) + 'px';
+                        element.style.left = (mouse.x - mouse.startX < 0) ? mouse.x + 'px' : mouse.startX + 'px';
+                        element.style.top = (mouse.y - mouse.startY < 0) ? mouse.y + 'px' : mouse.startY + 'px';
+                    }
+                }
+                canvas.appendChild(closeButton)
+                boxIDs.push(idVar)
+                idVar++
+                element = null
+
+
+            }
+            document.getElementById("userVal").value = numBoxes
+            document.getElementById("sysPred").value = numBoxes
+            correctIDs = []
+            boxIDs.forEach(function(e) {
+              correctIDs.push(e)
+            })
+            console.log(correctIDs)
+        }
+
+        initBoxes(pos)
     }
 
     function makeDiff() {
       if(checkDiff()) {
-        document.getElementById('userVal').style.border = "2px solid red";
-        document.getElementById('userVal').style.color = "red";
-        document.getElementById('nextBtn').innerText = "The system is incorrect"
+        tutNext.style.background = "#4CAF50"
+        tutNext.disabled = false;
+        tutNext.title = ""
         userDiff = 1;
       }
       else {
@@ -460,7 +632,7 @@
       canvasLoc = document.getElementById('canvas').getBoundingClientRect();
       var temp = {}
       temp.left = (parseFloat(element.style.left) - parseFloat(canvasLoc.left)) + "px"
-      temp.top = (parseFloat(element.style.top) - parseFloat(canvasLoc.top)) + "px"
+      temp.top = (parseFloat(element.style.top) - parseFloat(canvasLoc.top) + 70) + "px"
       temp.width = element.style.width
       temp.height = element.style.height
       imgBoxes.push(temp)
