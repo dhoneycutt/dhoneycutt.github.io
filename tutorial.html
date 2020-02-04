@@ -423,6 +423,7 @@
         }
 
         imageID.onmousedown = function (e) {
+          if(pos == 4) {  //Add any other drawing positions
             console.log("begun.");
             mouse.startX = mouse.x;
             mouse.startY = mouse.y;
@@ -511,6 +512,8 @@
             }
             canvas.appendChild(element)
             canvas.style.cursor = "crosshair";
+
+          }
 
         }
 
