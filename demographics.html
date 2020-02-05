@@ -15,26 +15,8 @@
         What is your age?
     </p>
     <br />
-    <div class="radio-toolbar">
-      <p class="centerP">
-        <input type="radio" id="q11" name="age" value="18-24">
-        <label for="q11">18-24</label>
-
-        <input type="radio" id="q12" name="age" value="25-34">
-        <label for="q12">25-34</label>
-
-        <input type="radio" id="q13" name="age" value="35-44">
-        <label for="q13">35-44</label>
-
-        <input type="radio" id="q14" name="age" value="45-54">
-        <label for="q14">45-54</label>
-
-        <input type="radio" id="q15" name="age" value="55-64">
-        <label for="q15">55-64</label>
-
-        <input type="radio" id="q16" name="age" value="65+">
-        <label for="q16">65+</label>
-      </p>
+    <div class="centerP">
+      <input id="ageInput" type="number" min="18"></input>
     </div>
 
     <br /><br />
@@ -198,7 +180,11 @@
 
     //TODO: Add border around unanswered questions
     try {
-      localStorage.age = document.querySelector('input[name="age"]:checked').value
+      localStorage.age = document.getElementById("ageInput").value
+      if(localStorage.age < 18) {
+        alert("Age must be >18")
+        answered = 0
+      }
     }
     catch {
          answered = 0
