@@ -12,7 +12,7 @@
     </div>
     <br />
     <p class="centerP" id="sysPredP">
-        System Prediction: <input id="sysPred" type="text" value="" disabled /> Your Answer: <input id="userVal" type="text" value="" disabled />
+        Human Faces Found: <input id="sysPred" type="text" value="" disabled /> Your Answer: <input id="userVal" type="text" value="" disabled />
     </p>
     <br />
     <p id="textP" class="centerP">
@@ -21,7 +21,7 @@
     <br />
         <!--<button id="tutPrev" class="btn" onclick="prevImg()">Previous Image</button>-->
     <p id="buttonP" class="centerP">
-      <button id="resetBtn" class="btn" onclick="resetBoxes()">Reset Changes</button>
+      <button id="resetBtn" class="btn" onclick="resetBoxes()" style="background-color:#00688B">Reset Changes</button>
       <button id="nextBtn" class="btn" onclick="nextImg()">The system is correct</button>
     </p>
     <br />
@@ -64,15 +64,14 @@
     canvasDiv.style.height = "350px"
     canvasDiv.style.width = "700px"
     sysPredP.style.display = "none"
-
     buttonP.style.display = "none"
 
-    tutorialText = ["When you see a system error, you can correct it by removing incorrect boxes and/or adding missing boxes to the image.","If the system placed a box in an incorrect location, you can remove it by clicking the X button on the top right of the box.", "Practice: Please remove the box from this image.", "If the system missed a human face, you can add the missing box to the image by clicking and dragging.", "Practice: Please add a box anywhere on the black square.", "To say that the system is correct for an image, simply press the \"The system is correct\" button without making any changes.", "To say that the system made an error for an image, correct the position of the bounding boxes and press the \"The system is incorrect\" button.", "If you placed or removed boxes by mistake, press the \"Reset changes\" button to return to saying that the system is correct.", "Remember that your responses will be used to update the system's algorithms several times during the task, so please answer as accurately as possible.\nAdditionally, poor quality in your responses may affect your compensation."]
+    tutorialText = ["When you see a system error, you can correct it by removing incorrect boxes and/or adding missing boxes to the image.","If the system placed a box in an incorrect location, you can remove it by clicking the X button on the top right of the box.", "Practice: Please remove the box from this image.", "If the system missed a human face, you can add the missing box to the image by clicking and dragging.", "Practice: Please add a box anywhere on the black square.", "Now that you know how to use the interface, this is what the system will look like.", "If the system is correct for an image, simply press the \"The system is correct\" button without making any changes.", "If the system made an error for an image, fix the problem and press the \"The system is incorrect\" button.", "If you placed or removed boxes by mistake, press the \"Reset changes\" button to return to the original state.", "There will now be a practice task.", "", "Here is an example of what a correct response could look like. Do not worry if your answer was slightly different.", "Remember that your responses will be used to update the system's algorithms several times during the task, so please answer as accurately as possible.\nAdditionally, poor quality in your responses may affect your compensation."]
     // tutorialText = ["When you see a system error, you can correct it by removing incorrect boxes and adding missing boxes to the image.","When the classification is correct, press the \"The system is correct\" button without making any changes to the image.","If the classification is incorrect, remove any incorrect bounding boxes by pressing the blue X button and add any missing bounding boxes by clicking and dragging on the image.\nOnce your corrections have been made, press the \"The system is incorrect\" button to continue, or press \"Reset changes\" to undo your Changes\nNote that your responses are not being recorded at this stage, so feel free to experiment with the system until you feel comfortable and do not worry about the accuracy of this response.","You will now be taken to the task.\nRemember that the system will update based on your feedback, so please pay attention to your responses.\nThere will be quality control questions included, so be sure to give as accurate responses as possible."
-    tutorialImg = ["NA", "tutorial/removeBox.gif", "tutorial/blank.jpg", "tutorial/addBox.gif", "tutorial/blank.jpg", "tutorial/correct.jpg", "tutorial/incorrect.jpg", "tutorial/reset.jpg", "NA"]
-    boxArr = [[], [], [{"left":"319.6000061035156px","top":"157px","width":"61px","height":"83px"}], [], [], [], [], [], []]
+    tutorialImg = ["NA", "tutorial/removeBox.gif", "tutorial/blank.jpg", "tutorial/addBox.gif", "tutorial/blank.jpg", "NA", "tutorial/correct.gif", "tutorial/incorrect.gif", "tutorial/reset.gif", "NA", "tutorial/0.jpg", "tutorial/answer.jpg", "NA"]
+    boxArr = [[], [], [{"left":"319.6000061035156px","top":"157px","width":"61px","height":"83px"}], [], [], [], [], [], [], [], [{"left":"313px","top":"161px","width":"72px","height":"84px"}], [], [], [], [], [], [], [], [], [], []]
     correctAns = []
-    tutorialBlock = [0, 0, 1, 0, 1, 0, 0, 0, 0]
+    tutorialBlock = [0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0]
 
     initDraw(document.getElementById('canvas'), 0);
 
@@ -99,17 +98,21 @@
           canvasDiv.style.height = "0px"
           clearBoxes()
         }
-        else if (pos >= 5) {
-          canvasDiv.style.height = "200px"
-          tutImg.src = tutorialImg[pos]
-          clearBoxes()
-          initDraw(document.getElementById('canvas'), pos)
-        }
         else {
           canvasDiv.style.height = "350px"
           tutImg.src = tutorialImg[pos]
           clearBoxes()
           initDraw(document.getElementById('canvas'), pos)
+          if (pos == 10) {
+            sysPredP.style.display = "block"
+            buttonP.style.display = "block"
+            nextP.style.display = "none"
+          }
+          else {
+            nextP.style.display = "block"
+            sysPredP.style.display = "none"
+            buttonP.style.display = "none"
+          }
         }
 
       }
@@ -127,17 +130,21 @@
           canvasDiv.style.height = "0px"
           clearBoxes()
         }
-        else if (pos >= 5) {
-          canvasDiv.style.height = "200px"
-          tutImg.src = tutorialImg[pos]
-          clearBoxes()
-          initDraw(document.getElementById('canvas'), pos)
-        }
         else {
           canvasDiv.style.height = "350px"
           tutImg.src = tutorialImg[pos]
           clearBoxes()
           initDraw(document.getElementById('canvas'), pos)
+          if (pos == 10) {
+            sysPredP.style.display = "block"
+            buttonP.style.display = "block"
+            nextP.style.display = "none"
+          }
+          else {
+            nextP.style.display = "block"
+            sysPredP.style.display = "none"
+            buttonP.style.display = "none"
+          }
         }
       }
       else {
@@ -150,14 +157,14 @@
       if(userDiff == 1) {
         if(pos == 1) {
           clearBoxes()
-          alert("Your input has been reset due to window resizing. Please redo any changes that were made on this image (previous answers are retained)")
+          //alert("Your input has been reset due to window resizing. Please redo any changes that were made on this image (previous answers are retained)")
           initDraw(document.getElementById('canvas'), pos)
         }
 
       }
       else {
         clearBoxes()
-        alert("Your input has been reset due to window resizing. Please redo any changes that were made on this image (previous answers are retained)")
+        //alert("Your input has been reset due to window resizing. Please redo any changes that were made on this image (previous answers are retained)")
         resetBoxes()
       }
     }
@@ -256,32 +263,23 @@
     }
 
     function nextImg() {
-      if (pos == 1) {
-        if (userDiff == 1) {
-          alert("Please answer that the system is correct (reset the changes and select \"The system is correct\")")
+      if (userDiff == 0) {
+          alert("The system's answer is not correct. Please correct it and continue.")
+        }
+        else if (numBoxes != 3) {
+          alert("There are three faces in this image. Place a box over each of them and nowhere else to continue.")
         }
         else {
           pos++
           textP.innerText = tutorialText[pos]
           tutImg.src = tutorialImg[pos]
-          initDraw(document.getElementById('canvas'), pos)
-        }
-      }
-      else if (pos == 2) {
-        if(userDiff == 0) {
-          alert("Please answer that the system is incorrect (remove the existing bounding box and add at least one new bounding box to the image to continue)")
-        }
-        else {
           clearBoxes()
-          pos++
-          textP.innerText = tutorialText[pos]
-          tutImg.src = tutorialImg[pos]
-          sysPredP.style.display = "none"
-
-          buttonP.style.display = "none"
+          initDraw(document.getElementById('canvas'), pos)
           nextP.style.display = "block"
+          sysPredP.style.display = "none"
+          buttonP.style.display = "none"
         }
-      }
+
         // if (i == numFiles - 1) {
         //   pAns = JSON.parse(localStorage.pAns)
         //   pAns.push(userAns)
@@ -423,7 +421,7 @@
         }
 
         imageID.onmousedown = function (e) {
-          if(pos == 4) {  //Add any other drawing positions
+          if(pos == 4 || pos == 10) {  //Add any other drawing positions
             console.log("begun.");
             mouse.startX = mouse.x;
             mouse.startY = mouse.y;
@@ -604,6 +602,9 @@
         tutNext.style.background = "#4CAF50"
         tutNext.disabled = false;
         tutNext.title = ""
+        document.getElementById('userVal').style.border = "2px solid red";
+        document.getElementById('userVal').style.color = "red";
+        document.getElementById('nextBtn').innerText = "The system is incorrect"
         userDiff = 1;
       }
       else {
