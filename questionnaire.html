@@ -15,17 +15,17 @@
     </div>
     <br /><br /><br /><br />
     <p class="centerP">
-        How likely do you think the system is at this stage to accurately identify the locations of all faces in an image?
+        Please estimate how likely you think the system is to detect all faces in an image
     </p>
     <br />
     <div class="slidecontainer">
       <input type="range" min="0" max="100" value="50" class="slider" id="q1">
       <div class="sliderticks">
-        <p>0%</p>
+        <p>0%<br />(Never)</p>
         <p>25%</p>
         <p>50%</p>
         <p>75%</p>
-        <p>100%</p>
+        <p>100%<br />(Always)</p>
       </div>
       <!-- <p class="centerP">Answer: <span id="q1Val"></span></p> -->
     </div>
@@ -121,8 +121,7 @@
 
   function submit() {
     //if(!answered.every(isComplete)) {
-    //REMOVE THIS
-    implementing = false
+    //implementing = false
     if(answered == 0) {
       alert("You must answer all questions before continuing")
     }
@@ -137,11 +136,8 @@
       if(iteration >= 2) {
         window.location.href = "inbetween.html"
       }
-      else if(localStorage.intCond == "2") {
-        window.location.href = "fullInteraction.html"
-      }
       else {
-        window.location.href = "binaryInteraction.html"
+        window.location.href = "afterQ.html"
       }
     }
   }
