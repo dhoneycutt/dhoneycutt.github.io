@@ -101,6 +101,7 @@
         sysPred.innerHTML = tutorialPred[pos]
         if (tutorialImg[pos] == "NA") {
           docCanvas.style.height = "0px"
+          tutImg.src = "tutorial/blank.jpg"
           clearBoxes()
         }
         else {
@@ -129,9 +130,10 @@
         }
         textP.innerText = tutorialText[pos]
         sysPred.innerHTML = tutorialPred[pos]
-        tutImg.src = tutorialImg[pos]
+
         if (tutorialImg[pos] == "NA") {
           docCanvas.style.height = "0px"
+          tutImg.src = "tutorial/blank.jpg"
           clearBoxes()
         }
         else {

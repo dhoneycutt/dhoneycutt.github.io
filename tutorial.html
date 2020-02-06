@@ -96,6 +96,7 @@
 
         if (tutorialImg[pos] == "NA") {
           canvasDiv.style.height = "0px"
+          tutImg.src = "tutorial/blank.jpg"
           clearBoxes()
         }
         else {
@@ -124,10 +125,13 @@
     function previous() {
       if(pos > 0) {
         pos--
+        tutNext.style.background = "#4CAF50"
+        tutNext.disabled = false;
+        tutNext.title = ""
         textP.innerText = tutorialText[pos]
-        tutImg.src = tutorialImg[pos]
         if (tutorialImg[pos] == "NA") {
           canvasDiv.style.height = "0px"
+          tutImg.src = "tutorial/blank.jpg"
           clearBoxes()
         }
         else {
