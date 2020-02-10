@@ -29,7 +29,15 @@
 <script>
   cond = localStorage.intCond
   function previous() {
-    window.location.href = "instructions.html"
+    if(localStorage.intCond == "2") {
+      localStorage.tutPos = "end"
+      window.location.href = "tutorial.html"
+    }
+    else {
+      localStorage.tutPos = "end"
+      window.location.href = "instructions.html"
+    }
+
   }
 
   function next() {

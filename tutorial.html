@@ -7,9 +7,11 @@
 </head>
 <body>
     <link rel="stylesheet" href="styles.css" />
-    <p class="centerP" id="titleP" style="font-size: 30px; color: red">
-      Instructions
-    </p>
+    <div id = "titleDiv">
+      <p class="centerP" id="titleP" style="font-size: 30px; color: red">
+        Instructions
+      </p>
+    </div>
     <div id="canvas">
         <img id="imageID" style="max-height:100%; max-width: 100%" draggable="false" user-select="none" />
     </div>
@@ -69,17 +71,21 @@
     sysPredP.style.display = "none"
     buttonP.style.display = "none"
 
-    tutorialText = ["When you see a system error, you can correct it by removing incorrect boxes and/or adding missing boxes to the image.","If the system placed a box in an incorrect location, you can remove it by clicking the X button on the top right of the box.", "Practice: Please remove the box from this image.", "If the system missed a human face, you can add the missing box to the image by clicking and dragging.", "Practice: Please add a box to this image.", "Now that you know how to use the interface, this is what the system will look like.", "If the system is correct for an image, simply press the \"The system is correct\" button without making any changes.", "If the system made an error for an image, fix the problem and press the \"Submit corrections\" button.", "If you placed or removed boxes by mistake, press the \"Reset changes\" button to return to the original state.", "There will now be a practice task.", "", "Here is an example of what a correct response could look like. Do not worry if your answer was slightly different.", "Remember that your responses will be used to update the system's algorithms several times during the task, so please answer as accurately as possible.\nAdditionally, poor quality in your responses may affect your compensation."]
+    tutorialText = ["When you see a system error, you can correct it by removing incorrect boxes and/or adding missing boxes to the image.","If the system placed a box in an incorrect location, you can remove it by clicking the X button on the top right of the box.", "Practice: Please remove the box from this image.", "If the system missed a human face, you can add the missing box to the image by clicking and dragging.", "Practice: Please add a box to this image.", "Next, you will be shown what the system will look like.", "If the system is correct for an image, simply press the \"The system is correct\" button without making any changes.", "If the system made an error for an image, fix the problem and press the \"Submit corrections\" button.", "If you placed or removed boxes by mistake, press the \"Reset changes\" button to return to the original state.", "There will now be a practice task.", "", "Here is an example of what a correct response could look like. Do not worry if your answer was slightly different.", "Remember that your responses will be used to update the system's algorithms several times during the task, so please answer as accurately as possible.\nAdditionally, poor quality in your responses may affect your compensation."]
     // tutorialText = ["When you see a system error, you can correct it by removing incorrect boxes and adding missing boxes to the image.","When the classification is correct, press the \"The system is correct\" button without making any changes to the image.","If the classification is incorrect, remove any incorrect bounding boxes by pressing the blue X button and add any missing bounding boxes by clicking and dragging on the image.\nOnce your corrections have been made, press the \"Submit corrections\" button to continue, or press \"Reset changes\" to undo your Changes\nNote that your responses are not being recorded at this stage, so feel free to experiment with the system until you feel comfortable and do not worry about the accuracy of this response.","You will now be taken to the task.\nRemember that the system will update based on your feedback, so please pay attention to your responses.\nThere will be quality control questions included, so be sure to give as accurate responses as possible."
     tutorialImg = ["NA", "tutorial/removeBox.gif", "tutorial/2.jpg", "tutorial/addBox.gif", "tutorial/4.jpg", "NA", "tutorial/correct.gif", "tutorial/incorrect.gif", "tutorial/reset.gif", "NA", "tutorial/0.jpg", "tutorial/answer.jpg", "NA"]
     boxArr = [[], [], [{"left":"319.6000061035156px","top":"157px","width":"61px","height":"83px"}], [], [], [], [], [], [], [], [{"left":"313px","top":"161px","width":"72px","height":"84px"}], [], [], [], [], [], [], [], [], [], []]
     correctAns = []
     tutorialBlock = [0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0]
+    titleArr = ["Instructions", "Example: Remove Box", "Practice: Remove Box", "Example: Add Box", "Practice: Add Box", "Instructions", "Example: Correct", "Example: Error", "Example: Reset", "Instructions", "Practice Task", "Practice Task", "Instructions"]
 
     initDraw(document.getElementById('canvas'), 0);
 
 
     pos = 0
+    if(localStorage.tutPos == "end") {
+      pos = tutorialText.length - 1
+    }
     textP.innerText = tutorialText[pos]
     tutImg.src = tutorialImg[pos]
     canvasDiv.style.height = "0px"
@@ -90,6 +96,7 @@
       if(pos < tutorialText.length - 1) {
         pos++
         textP.innerText = tutorialText[pos]
+        titleP.innerText = titleArr[pos]
 
         if(tutorialBlock[pos]) {
           tutNext.style.background = "#A9A9A9"
@@ -127,11 +134,17 @@
 
     function previous() {
       if(pos > 0) {
+        console.log(pos)
+        if(pos == 11) {
+          pos--
+        }
+
         pos--
         tutNext.style.background = "#4CAF50"
         tutNext.disabled = false;
         tutNext.title = ""
         textP.innerText = tutorialText[pos]
+        titleP.innerText = titleArr[pos]
         if (tutorialImg[pos] == "NA") {
           canvasDiv.style.height = "0px"
           tutImg.src = "tutorial/blank.jpg"
@@ -194,7 +207,7 @@
     //         element.style.left = (parseFloat(boxes[j].left) + parseFloat(canvasPos.left)).toString() + "px"
     //         //element.style.top = (parseFloat(boxes[j].top) + parseFloat(canvasPos.top)).toString() + "px"
     //         titleOffset = document.getElementById('titleDiv').offsetHeight
-element.style.top = (parseFloat(boxes[j].top) - 62 + titleOffset).toString() + "px"
+    //          element.style.top = (parseFloat(boxes[j].top) - 62 + titleOffset).toString() + "px"
     //         element.style.width = boxes[j].width;
     //         element.style.height = boxes[j].height;
     //         element.onmousemove = function (e) {

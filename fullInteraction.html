@@ -7,9 +7,11 @@
 </head>
 <body>
     <link rel="stylesheet" href="styles.css" />
-    <p class="centerP" id="titleP" style="font-size: 30px; color: red">
-      Instructions
-    </p>
+    <div id = "titleDiv">
+      <p class="centerP" id="titleP" style="font-size: 30px; color: red">
+        Task: Round 1 of 3
+      </p>
+    </div>
     <div id="canvas">
         <img id="imageID" style="max-height:100%; max-width: 100%" draggable="false" user-select="none" />
     </div>
@@ -46,7 +48,8 @@
     var iteration = localStorage.iteration
     document.getElementById("imageID").src = "images_" + iteration + "/0.jpg"
     initDraw(document.getElementById('canvas'), 0);
-
+    title = document.getElementById('titleP')
+    title.innerText = "Task: Round " + (parseInt(iteration) + 1) + " of 3"
 
     function resizeFnc() {
       clearBoxes()

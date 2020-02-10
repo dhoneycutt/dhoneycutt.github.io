@@ -70,6 +70,7 @@
     }
     tutorialImg = ["NA", "tutorial/0.jpg", "NA", "tutorial/0.jpg", "tutorial/1.jpg", "tutorial/2.jpg", "tutorial/3.jpg", "NA"]
     boxArr = [[], [{"left":"319.6000061035156px","top":"157px","width":"61px","height":"83px"},{"left":"393.6000061035156px","top":"186px","width":"41px","height":"87px"},{"left":"501.6000061035156px","top":"176px","width":"77px","height":"90px"}], [], [{"left":"319.6000061035156px","top":"157px","width":"61px","height":"83px"},{"left":"393.6000061035156px","top":"186px","width":"41px","height":"87px"},{"left":"501.6000061035156px","top":"176px","width":"77px","height":"90px"}], [{"left":"74.60000610351562px","top":"116px","width":"171px","height":"166px"},{"left":"432.6000061035156px","top":"168px","width":"88px","height":"96px"}], [{"left":"323.6000061035156px","top":"136px","width":"56px","height":"64px"}], [{"left":"251.60000610351562px","top":"232px","width":"36px","height":"41px"}], []]
+    titleArr = ["Instructions", "Instructions", "Instructions", "Example: Correct", "Instructions", "Example: Error", "Example: Error", "Instructions"]
     pos = 0
     if(localStorage.tutPos == "end") {
       pos = tutorialText.length - 1
@@ -82,6 +83,7 @@
     tutorialPred = ["", "Human Faces Found: <input id=\"sysPred\" type=\"text\" value=\"3\" disabled />", "", "Human Faces Found: <input id=\"sysPred\" type=\"text\" value=\"3\" disabled />", "", "Human Faces Found: <input id=\"sysPred\" type=\"text\" value=\"1\" disabled />", "Human Faces Found: <input id=\"sysPred\" type=\"text\" value=\"1\" disabled />", ""]
     textP.innerText = tutorialText[pos]
     sysPred.innerHTML = tutorialPred[pos]
+    titleP.innerText = titleArr[pos]
     //sysPred.innerText = "Human Faces Found: <input id="sysPred" type="text" value="" disabled />"
 
     var i = 0;
@@ -105,6 +107,7 @@
         pos++
         textP.innerText = tutorialText[pos]
         sysPred.innerHTML = tutorialPred[pos]
+        titleP.innerText = titleArr[pos]
         if (tutorialImg[pos] == "NA") {
           docCanvas.style.height = "0px"
           tutImg.src = "tutorial/blank.jpg"
@@ -136,6 +139,7 @@
         }
         textP.innerText = tutorialText[pos]
         sysPred.innerHTML = tutorialPred[pos]
+        titleP.innerText = titleArr[pos]
 
         if (tutorialImg[pos] == "NA") {
           docCanvas.style.height = "0px"
