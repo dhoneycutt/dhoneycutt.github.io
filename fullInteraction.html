@@ -20,7 +20,7 @@
     </p>
     <br />
     <p class="centerP">
-        If the system's prediction is incorrect, remove any incorrect bounding boxes and add any missing bounding boxes.<br/>Otherwise, continue to the next image with no changes
+        Please accept the image or correct any errors.
     </p>
     <br />
         <!--<button id="prevBtn" class="btn" onclick="prevImg()">Previous Image</button>-->
@@ -380,6 +380,7 @@
         }
         numBoxes = 0
         document.getElementById('nextBtn').innerText = "The system is correct"
+        document.getElementById('nextBtn').style = "background-color:#4CAF50"
     }
 
 
@@ -389,6 +390,7 @@
         document.getElementById('userVal').style.border = "2px solid red";
         document.getElementById('userVal').style.color = "red";
         document.getElementById('nextBtn').innerText = "Submit corrections"
+        document.getElementById('nextBtn').style = "background-color:#DC143C"
         userDiff = 1;
       }
       else {
@@ -396,6 +398,7 @@
         document.getElementById('userVal').style.color = "black";
         userDiff = 0;
         document.getElementById('nextBtn').innerText = "The system is correct"
+        document.getElementById('nextBtn').style = "background-color:#4CAF50"
       }
     }
 

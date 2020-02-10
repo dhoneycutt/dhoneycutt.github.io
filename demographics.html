@@ -135,6 +135,12 @@
   output1.innerHTML = "??"; // Display the default slider value
 
   // Update the current slider value (each time you drag the slider handle)
+  slider1.oninput = function() {
+    output1.innerHTML = this.value;
+    slider1.className = "sliderA"
+    continueBtn.style.background = "#4CAF50"
+    sAnswered = 1
+  }
   slider1.onclick = function() {
     output1.innerHTML = this.value;
     slider1.className = "sliderA"

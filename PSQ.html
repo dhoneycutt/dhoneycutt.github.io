@@ -20,6 +20,14 @@
     </p>
     <br /><br />
     <p class="centerP">
+        Did you notice any changes to system accuracy across the rounds of the task?
+    </p>
+    <br />
+    <p class="centerP">
+        <textarea id="changes"></textarea>
+    </p>
+    <br /><br />
+    <p class="centerP">
         Do you have any additional comments about the system or this task?
     </p>
     <br />
@@ -81,6 +89,7 @@
   function submit() {
     weak = document.getElementById("weak").value
     comments = document.getElementById("comments").value
+    changes = document.getElementById("changes").value
     answered = 1
 
     if (weak == "") {
@@ -89,12 +98,17 @@
     if (comments == "") {
         answered = 0
     }
+    if (changes == "") {
+        answered = 0
+    }
+
     if (answered == 0) {
       alert("You must answer all questions before continuing")
     }
     else {
         localStorage.weak = JSON.stringify(weak)
         localStorage.comments = JSON.stringify(comments)
+        localStorage.changes = JSON.stringify(changes)
         complete()
         //window.location.href = "binaryInteraction.html"
 
