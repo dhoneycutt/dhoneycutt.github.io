@@ -193,7 +193,8 @@
     //         element.draggable = 'false'
     //         element.style.left = (parseFloat(boxes[j].left) + parseFloat(canvasPos.left)).toString() + "px"
     //         //element.style.top = (parseFloat(boxes[j].top) + parseFloat(canvasPos.top)).toString() + "px"
-    //         element.style.top = (parseFloat(boxes[j].top) - 27).toString() + "px"
+    //         titleOffset = document.getElementById('titleDiv').offsetHeight
+element.style.top = (parseFloat(boxes[j].top) - 62 + titleOffset).toString() + "px"
     //         element.style.width = boxes[j].width;
     //         element.style.height = boxes[j].height;
     //         element.onmousemove = function (e) {
@@ -539,7 +540,8 @@
                 element.draggable = false
                 element.style.left = (parseFloat(boxes[j].left) + parseFloat(canvasPos.left)).toString() + "px"
                 //element.style.top = (parseFloat(boxes[j].top) + parseFloat(canvasPos.top)).toString() + "px"
-                element.style.top = (parseFloat(boxes[j].top) - 27).toString() + "px"
+                titleOffset = document.getElementById('titleDiv').offsetHeight
+                element.style.top = (parseFloat(boxes[j].top) - 62 + titleOffset).toString() + "px"
                 element.style.width = boxes[j].width;
                 element.style.height = boxes[j].height;
                 element.onmousemove = function (e) {
