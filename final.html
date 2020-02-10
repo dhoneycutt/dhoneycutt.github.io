@@ -30,6 +30,8 @@
   output.from = localStorage.from
   output.postQ.comments = localStorage.comments
   output.postQ.weak = localStorage.weak
+  output.postQ.weak = localStorage.weak
+  output.postQ.changes = localStorage.changes
   output.time.end = localStorage.endTime
   output.preQ.gender = localStorage.gender
   output.intCond = localStorage.intCond
@@ -43,6 +45,7 @@
   output.time.third = localStorage.time2
 
   document.getElementById("output").value = JSON.stringify(output)
+
   //continueBtn.style.background = "#A9A9A9";
 
   //Handle sliders

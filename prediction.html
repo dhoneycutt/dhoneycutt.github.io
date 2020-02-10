@@ -7,6 +7,11 @@
 </head>
 <body>
     <link rel="stylesheet" href="styles.css" />
+    <div id = "titleDiv">
+      <p class="centerP" id="titleP" style="font-size: 30px; color: red">
+        Prediction Task
+      </p>
+    </div>
     <div id="canvas">
         <img id="imageID" style="max-height:100%; max-width: 100%" draggable="false" user-select="none" />
     </div>
@@ -18,8 +23,8 @@
     <br />
         <!--<button id="prevBtn" class="btn" onclick="prevImg()">Previous Image</button>-->
     <p class="centerP">
-        <button id="agree" class="btn" onclick="agree()">Correct</button>
-        <button id="disagree" class="btn" onclick="disagree()">Incorrect</button>
+        <button id="disagree" class="btn" onclick="disagree()" style="background-color:#DC143C">Incorrect</button>
+        <button id="agree" class="btn" onclick="agree()" style="background-color:#00688B">Correct</button>
     </p>
         <!--<button id="clearBtn" class="btn" onclick="clearBoxes()">Clear Boxes</button>-->
     <script src="boxes.js"></script>

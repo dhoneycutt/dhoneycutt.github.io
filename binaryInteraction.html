@@ -7,6 +7,11 @@
 </head>
 <body>
     <link rel="stylesheet" href="styles.css" />
+    <div id = "titleDiv">
+      <p class="centerP" id="titleP" style="font-size: 30px; color: red">
+        Instructions
+      </p>
+    </div>
     <div id="canvas">
         <img id="imageID" style="max-height:100%; max-width: 100%" draggable="false" user-select="none" />
     </div>
@@ -44,6 +49,8 @@
     var iteration = localStorage.iteration
     document.getElementById("imageID").src = "images_" + iteration + "/0.jpg"
     initBoxes(iteration, 0)
+    title = document.getElementById('titleP')
+    title.innerText = "Task: Round " + (parseInt(iteration) + 1) + " of 3"
 
     function resizeFnc() {
       //alert("Your input has been reset due to window resizing. Please redo any changes that were made on this image (previous answers are retained)")
@@ -65,7 +72,8 @@
             element.draggable = 'false'
             element.style.left = (parseFloat(boxes[j].left) + parseFloat(canvasPos.left)).toString() + "px"
             //element.style.top = (parseFloat(boxes[j].top) + parseFloat(canvasPos.top)).toString() + "px"
-            element.style.top = (parseFloat(boxes[j].top) - 62).toString() + "px"
+            titleOffset = document.getElementById('titleDiv').offsetHeight
+            element.style.top = (parseFloat(boxes[j].top) - 62 + titleOffset).toString() + "px"
             element.style.width = boxes[j].width;
             element.style.height = boxes[j].height;
 

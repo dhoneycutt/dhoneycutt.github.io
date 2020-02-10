@@ -7,6 +7,12 @@
 </head>
 <body>
     <link rel="stylesheet" href="styles.css" />
+    <div id="titleDiv">
+      <p class="centerP" id="titleP" style="font-size: 30px; color: red">
+        Instructions
+      </p>
+    </div>
+
     <div id="canvas">
         <img id="imageID" style="max-height:100%; max-width: 100%" draggable="false" user-select="none" />
     </div>
@@ -57,13 +63,14 @@
 
     }
     if (cond == "2") {
-      tutorialText = ["You will be interacting with a system developed by researchers at University of Florida. They are trying to study the use of human correction to update image recognition systems for research purposes.", "The system attempts to identify the location of all human faces in the image. In the example image above, the system detected three faces that are located inside the red boxes placed on the image.", "You will be shown a series of images, each including boxes over where the system thinks faces are. You are asked to respond whether the system is correct or not. Periodically, the system will update its facial detection algorithm based on your responses.", "In this example, the system is correct. All human faces have been identified and no false identifications have been made.", "For the purposes of this application, the exact size and position of the box aren't relevant. If the face is inside of the box, it is considered correct. Both of the examples above are considered correct.", "In this example, the system has made an error. There are no human faces in the image, but the system has identified one falsely.", "This is another example of an error. The system identified one face in the image, but there is actually a second face that was not recognized.", "You will now be shown how to provide feedback to the system."]
+      tutorialText = ["You will be interacting with a system developed by researchers at University of Florida. They are trying to study the use of human correction to update image recognition systems for research purposes.", "The system attempts to identify the location of all human faces in the image. In the example image above, the system detected three faces that are located inside the red boxes placed on the image.", "You will be shown a series of images, each including boxes over where the system thinks faces are. You are asked to respond whether the system is correct or not. Periodically, the system will update its facial detection algorithm based on your responses.", "In this example, the system is correct. All human faces have been identified and no false identifications have been made.", "For the purposes of this application, the exact size and position of the box aren't relevant. If the face is inside of the box, it is considered correct. Both of the examples above are considered correct.", "In this example, the system has made an error. There are no human faces in the image, but the system has identified one falsely.", "This is another example of an error. The system identified one face in the image, but there is actually a second face that was not recognized.", "You will now be shown how to provide feedback to the system. Remember that your feedback will be used to update the system's algorithms several times during the task."]
 
       transitionText = "Please answer as accurately as possible, your responses will be used to update the system's algorithms several times during the task.\nThe image set also includes several known responses to use for quality control. Incorrect responses may affect your compensation."
       // tutorialText = ["In this task, you will be interacting with a face detection system.\nYou will be shown the system's classification of a series of images, then asked to provide feedback about the accuracy of that classification.\n\n\n","Periodically during the task the system will update how it classifies images based on the feedback you gave, with the goal of improving its accuracy as you correct its outputs.\n\n\n\n","For the purposes of this system, a correct classification is defined as having bounding boxes placed over each human face in the image with no bounding boxes placed on regions of the image that do not contain a human face\n\n\n\n","This is an example of a correctly classified image.\nThere are no human faces in the image, and there are no bounding boxes placed on the image\n\n\n","This is another example of a correctly classified image.\nAll faces were identified with bounding boxes placed on them.\nNote that for the purposes of this system as long as the box contains the face it is considered correct (i.e. the box could encompass the face alone or the entire head and either would be valid output)\n\n","This is an example of an incorrectly classified image.\nThere are no human faces in the image, but the system misidentified a region of the image as if it contained a human face\n\n\n","This is another incorrectly classified image.\nThe image contains a human face that the system did not identify.\nAdditionally, the system placed a bounding box in an incorrect location.\nEither of these errors would make the classification incorrect, even if the number of boxes matches the number of faces.","You will now be shown how to provide your feedback to the system."]
     }
     tutorialImg = ["NA", "tutorial/0.jpg", "NA", "tutorial/0.jpg", "tutorial/1.jpg", "tutorial/2.jpg", "tutorial/3.jpg", "NA"]
     boxArr = [[], [{"left":"319.6000061035156px","top":"157px","width":"61px","height":"83px"},{"left":"393.6000061035156px","top":"186px","width":"41px","height":"87px"},{"left":"501.6000061035156px","top":"176px","width":"77px","height":"90px"}], [], [{"left":"319.6000061035156px","top":"157px","width":"61px","height":"83px"},{"left":"393.6000061035156px","top":"186px","width":"41px","height":"87px"},{"left":"501.6000061035156px","top":"176px","width":"77px","height":"90px"}], [{"left":"74.60000610351562px","top":"116px","width":"171px","height":"166px"},{"left":"432.6000061035156px","top":"168px","width":"88px","height":"96px"}], [{"left":"323.6000061035156px","top":"136px","width":"56px","height":"64px"}], [{"left":"251.60000610351562px","top":"232px","width":"36px","height":"41px"}], []]
+    titleArr = ["Instructions", "Instructions", "Instructions", "Example: Correct", "Instructions", "Example: Error", "Example: Error", "Instructions"]
     pos = 0
     if(localStorage.tutPos == "end") {
       pos = tutorialText.length - 1
@@ -76,6 +83,7 @@
     tutorialPred = ["", "Human Faces Found: <input id=\"sysPred\" type=\"text\" value=\"3\" disabled />", "", "Human Faces Found: <input id=\"sysPred\" type=\"text\" value=\"3\" disabled />", "", "Human Faces Found: <input id=\"sysPred\" type=\"text\" value=\"1\" disabled />", "Human Faces Found: <input id=\"sysPred\" type=\"text\" value=\"1\" disabled />", ""]
     textP.innerText = tutorialText[pos]
     sysPred.innerHTML = tutorialPred[pos]
+    titleP.innerText = titleArr[pos]
     //sysPred.innerText = "Human Faces Found: <input id="sysPred" type="text" value="" disabled />"
 
     var i = 0;
@@ -99,6 +107,7 @@
         pos++
         textP.innerText = tutorialText[pos]
         sysPred.innerHTML = tutorialPred[pos]
+        titleP.innerText = titleArr[pos]
         if (tutorialImg[pos] == "NA") {
           docCanvas.style.height = "0px"
           tutImg.src = "tutorial/blank.jpg"
@@ -130,6 +139,7 @@
         }
         textP.innerText = tutorialText[pos]
         sysPred.innerHTML = tutorialPred[pos]
+        titleP.innerText = titleArr[pos]
 
         if (tutorialImg[pos] == "NA") {
           docCanvas.style.height = "0px"
@@ -168,7 +178,8 @@
             element.draggable = 'false'
             element.style.left = (parseFloat(boxes[j].left) + parseFloat(canvasPos.left)).toString() + "px"
             //element.style.top = (parseFloat(boxes[j].top) + parseFloat(canvasPos.top)).toString() + "px"
-            element.style.top = (parseFloat(boxes[j].top) - 62).toString() + "px"
+            titleOffset = document.getElementById('titleDiv').offsetHeight
+            element.style.top = (parseFloat(boxes[j].top) - 62 + titleOffset).toString() + "px"
             element.style.width = boxes[j].width;
             element.style.height = boxes[j].height;
 

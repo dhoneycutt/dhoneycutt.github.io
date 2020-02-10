@@ -7,6 +7,11 @@
 </head>
 <body>
     <link rel="stylesheet" href="styles.css" />
+    <div id = "titleDiv">
+      <p class="centerP" id="titleP" style="font-size: 30px; color: red">
+        Task: Round 1 of 3
+      </p>
+    </div>
     <div id="canvas">
         <img id="imageID" style="max-height:100%; max-width: 100%" draggable="false" user-select="none" />
     </div>
@@ -15,7 +20,7 @@
     </p>
     <br />
     <p class="centerP">
-        If the system's prediction is incorrect, remove any incorrect bounding boxes and add any missing bounding boxes.<br/>Otherwise, continue to the next image with no changes
+        Please accept the image or correct any errors.
     </p>
     <br />
         <!--<button id="prevBtn" class="btn" onclick="prevImg()">Previous Image</button>-->
@@ -43,7 +48,8 @@
     var iteration = localStorage.iteration
     document.getElementById("imageID").src = "images_" + iteration + "/0.jpg"
     initDraw(document.getElementById('canvas'), 0);
-
+    title = document.getElementById('titleP')
+    title.innerText = "Task: Round " + (parseInt(iteration) + 1) + " of 3"
 
     function resizeFnc() {
       clearBoxes()
@@ -260,7 +266,8 @@
                 element.draggable = false
                 element.style.left = (parseFloat(boxes[j].left) + parseFloat(canvasPos.left)).toString() + "px"
                 //element.style.top = (parseFloat(boxes[j].top) + parseFloat(canvasPos.top)).toString() + "px"
-                element.style.top = (parseFloat(boxes[j].top) - 62).toString() + "px"
+                titleOffset = document.getElementById('titleDiv').offsetHeight
+                element.style.top = (parseFloat(boxes[j].top) - 62 + titleOffset).toString() + "px"
                 element.style.width = boxes[j].width;
                 element.style.height = boxes[j].height;
                 element.onmousemove = function (e) {
@@ -373,6 +380,7 @@
         }
         numBoxes = 0
         document.getElementById('nextBtn').innerText = "The system is correct"
+        document.getElementById('nextBtn').style = "background-color:#4CAF50"
     }
 
 
@@ -381,7 +389,8 @@
       if(checkDiff()) {
         document.getElementById('userVal').style.border = "2px solid red";
         document.getElementById('userVal').style.color = "red";
-        document.getElementById('nextBtn').innerText = "The system is incorrect"
+        document.getElementById('nextBtn').innerText = "Submit corrections"
+        document.getElementById('nextBtn').style = "background-color:#DC143C"
         userDiff = 1;
       }
       else {
@@ -389,6 +398,7 @@
         document.getElementById('userVal').style.color = "black";
         userDiff = 0;
         document.getElementById('nextBtn').innerText = "The system is correct"
+        document.getElementById('nextBtn').style = "background-color:#4CAF50"
       }
     }
 
