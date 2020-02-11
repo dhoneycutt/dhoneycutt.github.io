@@ -66,7 +66,7 @@
   localStorage.pAns = JSON.stringify([])
   intVal = document.getElementById("intVal")
   ordVal = document.getElementById("ordVal")
-  val = {}
+  output = {}
   output.id = "help"
   output.preQ = {}
   output.postQ = {}
@@ -76,7 +76,7 @@
     type : "POST",
     url : "json.php",
     data : {
-        json : JSON.stringify([0,0,0])
+        json : JSON.stringify(output)
     }
   });
 
