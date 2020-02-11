@@ -44,7 +44,7 @@
 
     <br /><br /><br /><br />
     <p class="centerP">
-        <button id="ord2" class="btn" href="consentform.html">Start Task</button>
+        <button id="ord2" class="btn" onclick="move()">Start Task</button>
     </p>
     <br />
 
@@ -65,6 +65,10 @@
   localStorage.pAns = JSON.stringify([])
   intVal = document.getElementById("intVal")
   ordVal = document.getElementById("ordVal")
+
+  function move() {
+    window.location.href = "instructions.html"
+  }
 
   function increase() {
     localStorage.ordCond = 0
