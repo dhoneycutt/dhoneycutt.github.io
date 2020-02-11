@@ -6,7 +6,7 @@
     <title>Select Condition</title>
 </head>
 <body>
-    <a onclick="increase()" href="#">Increasing (0)</a>
+    <!-- <a onclick="increase()" href="#">Increasing (0)</a>
     <br />
     <a onclick="same()" href="#">No Change (1)</a>
     <br />
@@ -25,11 +25,26 @@
     <a onclick="SONA()" href="#">SONA</a>
     <br />
     <a onclick="none()" href="#">None</a>
-    <br />
+    <br /> -->
+    <p class="centerP">
+        Int: <span id="intVal"></span>
+        <br/>
+        <button id="int0" class="btn" onclick="noInteraction()">0</button>
+        <button id="int1" class="btn" onclick="binaryInteraction()">1</button>
+        <button id="int2" class="btn" onclick="fullInteraction()">2</button>
+        <br/><br/>
+        Ord: <span id="ordVal"></span>
+        <br/>
+        <button id="ord0" class="btn" onclick="increase()">0</button>
+        <button id="ord1" class="btn" onclick="same()">1</button>
+        <button id="ord2" class="btn" onclick="decrease()">2</button>
+    </p>
 
 
     <br /><br /><br /><br />
-    <a href="consentform.html">Start Task</a>
+    <p class="centerP">
+        <button id="ord2" class="btn" href="consentform.html">Start Task</button>
+    </p>
     <br />
 
     <br />
@@ -47,25 +62,33 @@
   localStorage.iteration = 0
   localStorage.midQs = JSON.stringify([0, 0, 0])
   localStorage.pAns = JSON.stringify([])
+  intVal = document.getElementById("intVal")
+  ordVal = document.getElementById("ordVal")
 
   function increase() {
     localStorage.ordCond = 0
+    ordVal.innerHTML = "0"
   }
   function same() {
     localStorage.ordCond = 1
+    ordVal.innerHTML = "1"
   }
   function decrease() {
     localStorage.ordCond = 2
+    ordVal.innerHTML = "2"
   }
 
   function noInteraction() {
     localStorage.intCond = 0
+    intVal.innerHTML = "0"
   }
   function binaryInteraction() {
     localStorage.intCond = 1
+    intVal.innerHTML = "1"
   }
   function fullInteraction() {
     localStorage.intCond = 2
+    intVal.innerHTML = "2"
   }
 
   function turk() {
