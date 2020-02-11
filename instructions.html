@@ -48,7 +48,31 @@
     docCanvas.style.height = "0px"
     docCanvas.style.width = "700px"
     cond = localStorage.intCond
+    ordCond = localStorage.ordCond
 
+    if (localStorage.id == undefined) {
+      if (cond == "0") {
+        id1 = "N"
+      }
+      else if (cond == "1") {
+        id1 = "B"
+      }
+      else {
+        id1 = "F"
+      }
+      if (ordCond == "0") {
+        id2 = "I"
+      }
+      else if (ordCond == "1") {
+        id2 = "S"
+      }
+      else {
+        id2 = "D"
+      }
+
+      localStorage.id = id1 + id2 + ID()
+      alert(localStorage.id)
+    }
 
     //Make text different based on condition
     if (cond == "0") {
@@ -260,4 +284,11 @@
       imgBoxes.push(temp)
       localStorage.imgBoxes = JSON.stringify(imgBoxes)
     }
+
+    function ID() {
+      // Math.random should be unique because of its seeding algorithm.
+      // Convert it to base 36 (numbers + letters), and grab the first 9 characters
+      // after the decimal.
+      return '_' + Math.random().toString(36).substr(2, 9);
+    };
 </script>
