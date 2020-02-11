@@ -66,7 +66,11 @@
   localStorage.pAns = JSON.stringify([])
   intVal = document.getElementById("intVal")
   ordVal = document.getElementById("ordVal")
-
+  val = {}
+  output.id = "help"
+  output.preQ = {}
+  output.postQ = {}
+  output.time = {}
 
   $.ajax({
     type : "POST",
