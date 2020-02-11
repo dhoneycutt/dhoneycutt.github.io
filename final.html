@@ -18,6 +18,7 @@
 </body>
 </html>
 
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script>
   var output = {}
   output.id = localStorage.id
@@ -47,6 +48,14 @@
   output.time.third = localStorage.time2
 
   document.getElementById("output").value = JSON.stringify(output)
+
+  $.ajax({
+    type : "POST",
+    url : "json.php",
+    data : {
+        json : JSON.stringify(output)
+    }
+  });
 
   //continueBtn.style.background = "#A9A9A9";
 

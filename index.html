@@ -66,19 +66,19 @@
   localStorage.pAns = JSON.stringify([])
   intVal = document.getElementById("intVal")
   ordVal = document.getElementById("ordVal")
-  output = {}
-  output.id = "help"
-  output.preQ = {}
-  output.postQ = {}
-  output.time = {}
-
-  $.ajax({
-    type : "POST",
-    url : "json.php",
-    data : {
-        json : JSON.stringify(output)
-    }
-  });
+  // output = {}
+  // output.id = "help"
+  // output.preQ = {}
+  // output.postQ = {}
+  // output.time = {}
+  //
+  // $.ajax({
+  //   type : "POST",
+  //   url : "json.php",
+  //   data : {
+  //       json : JSON.stringify(output)
+  //   }
+  // });
 
 
   function move() {
