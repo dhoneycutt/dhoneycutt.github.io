@@ -67,6 +67,14 @@
   ordVal = document.getElementById("ordVal")
 
 
+  $.ajax({
+    type : "POST",
+    url : "json.php",
+    data : {
+        json : JSON.stringify([0,0,0])
+    }
+  });
+
 
   function move() {
     localStorage.removeItem('id')
