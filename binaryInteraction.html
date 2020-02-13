@@ -52,6 +52,20 @@
     title = document.getElementById('titleP')
     title.innerText = "Task: Round " + (parseInt(iteration) + 1) + " of 3"
 
+    //Task start time
+    var today = new Date();
+    if (iteration == "0") {
+      localStorage.timeStart0 = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    }
+    if (iteration == "1") {
+      localStorage.timeStart1 = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    }
+    if (iteration == "2") {
+      localStorage.timeStart2 = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    }
+
+
+
     function resizeFnc() {
       //alert("Your input has been reset due to window resizing. Please redo any changes that were made on this image (previous answers are retained)")
       resetBoxes()
